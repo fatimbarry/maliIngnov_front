@@ -8,7 +8,7 @@ const DashboardItem = ({ icon: Icon, label, color, isWide = false }) => (
     </div>
 );
 
-const ProjectManagementDashboard = () => {
+const WelcomeComponent = () => {
     const currentDate = new Date().toLocaleString('fr-FR', {
         year: 'numeric',
         month: 'long',
@@ -41,4 +41,4 @@ const ProjectManagementDashboard = () => {
     );
 };
 
-export default ProjectManagementDashboard;
+export default WelcomeComponent;

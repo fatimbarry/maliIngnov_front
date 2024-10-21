@@ -2,10 +2,7 @@
 module.exports = {
   darkMode: ["class"], // Active le mode sombre basé sur la classe
   content: [
-    './pages/**/*.{ts,tsx}', // Chemins pour scanner le contenu pour les classes Tailwind
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    "./src/**/*.{js,jsx,ts,tsx}",
   ],
   prefix: "", // Aucun préfixe ajouté aux classes Tailwind
   theme: {
