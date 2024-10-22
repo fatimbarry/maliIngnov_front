@@ -16,17 +16,20 @@ const WelcomeComponent = () => {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
-        timeZone: 'Africa/Casablanca'
+        timeZone: 'Africa/Dakar'
     });
 
     return (
         <div className="bg-gray-100 min-h-screen">
-            <header className="bg-black text-white p-4 flex justify-between items-center">
-                <div className="text-xl font-bold">MAROC INGENOV</div>
-                <div className="text-sm">{`Date : ${currentDate} WEST`}</div>
+            <header className="bg-black text-white flex justify-between items-center h-20">
+            <div className="mb-6 text-center">
+                    <img src={require('./logo.png')} alt="Logo Mali Ingenov" className="w-24 h-24 object-cover" />
+            
+                </div>
+                <div className="text-sm">{`Date : ${currentDate}`}</div>
             </header>
             <main className="container mx-auto p-4">
-                <h1 className="text-2xl font-bold mb-6">Bienvenu dans Project Management de Maroc-Ingenov</h1>
+                <h1 className="text-2xl font-bold mb-6 text-center">Bienvenu dans Project Management de Mali-Ingenov</h1>
                 <div className="grid grid-cols-4 gap-4">
                     <DashboardItem icon={User} label="Employé" color="bg-purple-500" isWide={true} />
                     <DashboardItem icon={FileText} label="respensable facturation" color="bg-blue-500" />

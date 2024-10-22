@@ -14,11 +14,11 @@ const ListProject= () => {
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
       <div className="w-64 bg-gray-900 text-white">
-        <div className="p-4 text-xl font-bold">MAROC INGENIOV</div>
+        <div className="p-4 text-xl font-bold">MALI INGENIOV</div>
         <nav className="mt-6">
           {[
             { icon: Home, label: 'Accueil' },
-            { icon: Briefcase, label: 'Affaires' },
+            { icon: Briefcase, label: 'Projet' },
             { icon: Users, label: 'Employés' },
             { icon: Users, label: 'Groupes' },
             { icon: Tag, label: 'Catégories' },
@@ -41,7 +41,7 @@ const ListProject= () => {
       <div className="flex-1 overflow-hidden">
         {/* Header */}
         <header className="bg-white shadow-md p-4 flex justify-between items-center">
-          <h1 className="text-xl font-bold">Liste des affaires</h1>
+          <h1 className="text-xl font-bold">Liste des Projets</h1>
           <div className="flex items-center">
             <span className="mr-4">abdo1.harir@gmail.com</span>
             <button className="bg-gray-200 p-2 rounded-full">
@@ -52,7 +52,7 @@ const ListProject= () => {
 
         {/* Project list */}
         <main className="p-6">
-          <div className="bg-white rounded-lg shadow-md">
+          <div className="bg-white rounded-lg shadow-md h-200">
             <div className="p-4 flex justify-between items-center border-b">
               <div className="flex items-center">
                 <span className="mr-2">Afficher</span>
@@ -66,7 +66,7 @@ const ListProject= () => {
               <div className="flex items-center">
                 <input type="text" placeholder="Chercher par" className="border rounded px-2 py-1 mr-2" />
                 <button className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition-colors">
-                  Ajouter contrat à cette affaire
+                  Ajouter contrat à ce Projet
                 </button>
               </div>
             </div>
@@ -81,7 +81,6 @@ const ListProject= () => {
                   <th className="px-4 py-2 text-left">État</th>
                   <th className="px-4 py-2 text-left">Date achèvement</th>
                   <th className="px-4 py-2 text-left">Secteur</th>
-                  <th className="px-4 py-2 text-left">Région</th>
                   <th className="px-4 py-2 text-left">Action</th>
                 </tr>
               </thead>
@@ -102,9 +101,6 @@ const ListProject= () => {
                     <td className="px-4 py-2">-</td>
                     <td className="px-4 py-2">-</td>
                     <td className="px-4 py-2">
-                      <button className="text-blue-500 hover:text-blue-700 mr-2">
-                        <Search className="h-4 w-4" />
-                      </button>
                       <button className="text-green-500 hover:text-green-700 mr-2">
                         <Plus className="h-4 w-4" />
                       </button>

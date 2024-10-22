@@ -3,7 +3,7 @@ import { UserPlus } from 'lucide-react';
 
 const AddClientForm = () => {
   return (
-    <div className="bg-white rounded-lg shadow-md max-w-md mx-auto">
+    <div className="bg-white rounded-lg shadow-md max-w-md mx-auto mt-20">
       <div className="bg-gray-800 text-white p-4 rounded-t-lg flex items-center">
         <UserPlus className="mr-2" />
         <h2 className="text-xl font-semibold">Ajout d'un nouveau Client</h2>
@@ -51,7 +51,7 @@ const AddClientForm = () => {
         <div className="flex justify-start space-x-4 pt-4">
           <button
             type="submit"
-            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
+            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
           >
             Enregistrer
           </button>

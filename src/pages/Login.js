@@ -3,13 +3,13 @@ import { User, Lock } from 'lucide-react';
 
 const LoginComponent = () => {
     return (
-        <div className="bg-black min-h-screen flex items-center justify-center">
-            <div className="bg-gray-900 p-8 rounded-lg shadow-lg w-80 relative">
+        <div className="bg-gray min-h-screen flex items-center justify-center">
+            <div className="bg-gray-900 p-10 rounded-lg shadow-lg w-96 relative">
                 <div className="absolute -top-3 -right-3 bg-gray-800 rounded-full p-2">
                     <Lock className="text-white" size={16} />
                 </div>
                 <div className="mb-6 text-center">
-                    <h1 className="text-white text-2xl font-bold">MAROC INGENOV</h1>
+                <img src={require('./logo.png')} alt="Logo Mali Ingenov" className="mx-auto w-24 h-24 object-cover" />
                     <p className="text-gray-400 text-sm">Gestion de projet</p>
                 </div>
                 <form>

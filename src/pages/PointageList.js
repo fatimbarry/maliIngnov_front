@@ -12,7 +12,7 @@ const PointageList = () => {
       {/* Sidebar */}
       <aside className="w-64 bg-gray-900 text-white">
         <div className="p-4">
-          <h2 className="text-2xl font-bold mb-4">MISACC INGÉNOV</h2>
+          <h2 className="text-2xl font-bold mb-4">MALI INGÉNOV</h2>
           <nav>
             <a href="#" className="flex items-center py-2 px-4 bg-blue-600 rounded"><Home className="mr-2" size={18} /> Accueil</a>
             <a href="#" className="flex items-center py-2 px-4"><Eye className="mr-2" size={18} /> Consultation</a>

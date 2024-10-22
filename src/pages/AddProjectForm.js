@@ -3,27 +3,25 @@ import { PlusCircle } from 'lucide-react';
 
 const AddProjectForm = () => {
   return (
-    <div className="bg-white rounded-lg shadow-md max-w-2xl mx-auto p-6">
+    <div className="bg-white rounded-lg shadow-md max-w-2xl mx-auto p-6 mt-10">
       <div className="flex items-center mb-6 text-blue-600">
         <PlusCircle className="w-6 h-6 mr-2" />
-        <h2 className="text-xl font-semibold">Ajout d'une nouvelle affaire</h2>
+        <h2 className="text-xl font-semibold text-center">Ajout d'un nouveau Projet</h2>
       </div>
       
       <form className="space-y-4">
         <div className="grid grid-cols-1 gap-4">
-          <InputField label="Numéro Affaire" />
           <InputField label="Date service" type="date" />
           <InputField label="Délai" />
           <InputField label="Nom" />
           <SelectField label="Secteur" options={['Option 1', 'Option 2']} />
-          <SelectField label="Région" options={['Option 1', 'Option 2']} />
           <SelectField label="Chef de projet" options={['SABIR Abdellah']} />
           <SelectField label="Adjoint" options={['SABIR Abdellah']} />
           <SelectField label="Client" options={['UYREE']} />
         </div>
         
         <div className="flex justify-start space-x-4 mt-6 bg-gray-100 p-4 rounded">
-          <button type="submit" className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+          <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
             Enregistrer
           </button>
           <button type="reset" className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded transition duration-300 ease-in-out">

@@ -10,11 +10,11 @@ const EmployeeImputation = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100 text-gray-800">
+    <div className="flex h-100 bg-gray-100 text-gray-800">
       {/* Sidebar */}
       <aside className="w-64 bg-gray-900 text-white">
         <div className="p-4">
-          <h2 className="text-xl font-bold mb-4">MAROC INGÉNOV</h2>
+          <h2 className="text-xl font-bold mb-4">MALI INGÉNOV</h2>
           <nav className="space-y-2">
             <a href="#" className="flex items-center py-2 px-4 hover:bg-gray-800 rounded"><Home size={18} className="mr-2" /> Accueil</a>
             <a href="#" className="flex items-center py-2 px-4 hover:bg-gray-800 rounded"><Eye size={18} className="mr-2" /> Consultation</a>
@@ -110,7 +110,7 @@ const EmployeeImputation = () => {
               <button className="p-1 rounded-full hover:bg-gray-200"><ChevronRight size={20} /></button>
             </div>
           </div>
-          <h3 className="text-xl font-bold mb-4">octobre 2014</h3>
+          <h3 className="text-xl font-bold mb-4">octobre 2024</h3>
           <div className="grid grid-cols-7 gap-2 text-center">
             <div className="font-bold">lun.</div>
             <div className="font-bold">mar.</div>

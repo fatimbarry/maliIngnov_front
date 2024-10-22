@@ -2,19 +2,28 @@ import React from 'react';
 import { Search, Users } from 'lucide-react';
 
 const EmployeeGallery = () => {
+  const currentDate = new Date().toLocaleString('fr-FR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    timeZone: 'Africa/Dakar'
+});
   const employees = [
-    { id: 1, name: 'SABIR Abdelilah', photo: '/api/placeholder/150/150', role: 'Admin' },
-    { id: 2, name: 'TAHRI Hanae', photo: '/api/placeholder/150/150', role: 'Admin' },
-    { id: 3, name: 'YAHIAOUI Hicham', photo: '/api/placeholder/150/150', role: 'Admin' },
-    { id: 4, name: 'hajar GAOUCHE', photo: '/api/placeholder/150/150', role: 'Admin' },
+    { id: 1, name: 'Fatima Barry', photo:require('./fatima.jpg'), role: 'Admin' },
+    { id: 2, name: 'Diary Diame', photo: require('./diarry.jpg'), role: 'Chef de Projet' },
+    { id: 3, name: 'Moussou Diabakhate', photo: require('./moussou.jpg'), role: 'Employe' },
+    { id: 4, name: 'Saye Lom', photo: require('./mame saye.jpg'), role: 'Chef de Groupe' },
   ];
 
   return (
     <div className="bg-gray-100 min-h-screen">
       <header className="bg-gray-800 text-white p-4">
         <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-xl font-bold">MAROC INGENIOV</h1>
-          <div className="text-sm">Date : 19 octobre 2024 15:35:59 WEST</div>
+          <h1 className="text-xl font-bold">MALI INGENIOV</h1>
+          <div className="text-sm">{`Date : ${currentDate}`}</div>
         </div>
       </header>
 
