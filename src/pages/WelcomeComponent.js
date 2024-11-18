@@ -1,12 +1,42 @@
 import React from 'react';
-import { User, FileText, Users, Keyboard, DollarSign, Briefcase, Compass } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import Footer from '../components/Footer';
+import {
+    UserCircle,
+    //FileSpreadsheet,
+    //Users,
+    //KeyRound,
+    Wallet,
+    BriefcaseIcon,
+    Compass
+} from 'lucide-react';
 
-const DashboardItem = ({ icon: Icon, label, color, isWide = false }) => (
-    <div className={`flex flex-col items-center justify-center p-4 rounded-lg ${color} text-white ${isWide ? 'col-span-2' : ''}`}>
-        <Icon size={48} />
-        <span className="mt-2 text-sm font-semibold">{label}</span>
-    </div>
+const DashboardItem = ({ icon: Icon, label, gradient, delay, onClick  }) => (
+    <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay }}
+        whileHover={{ scale: 1.05 }}
+        className="w-full"
+        onClick={onClick}
+
+    >
+        <div className={`rounded-lg shadow-md h-full overflow-hidden ${gradient} hover:shadow-xl transition-shadow duration-300`}>
+            <div className="p-6">
+                <div className="flex flex-col items-center justify-center space-y-4">
+                    <div className="p-4 bg-white/20 rounded-full">
+                        <Icon size={32} className="text-white" strokeWidth={1.5} />
+                    </div>
+                    <span className="text-white font-medium tracking-wide text-center">
+                        {label}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </motion.div>
 );
+
 
 const WelcomeComponent = () => {
     const currentDate = new Date().toLocaleString('fr-FR', {
@@ -15,33 +45,108 @@ const WelcomeComponent = () => {
         day: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
-        second: '2-digit',
         timeZone: 'Africa/Dakar'
     });
+    const navigate = useNavigate();
+
+    const cards = [
+        {
+            icon: UserCircle,
+            label: "Employé",
+            gradient: "bg-gradient-to-br from-purple-500 to-indigo-600",
+            delay: 0.1
+        },
+
+        {
+            icon: Compass,
+            label: "Direction",
+            gradient: "bg-gradient-to-br from-cyan-500 to-blue-400",
+            delay: 0.4
+        },
+
+        {
+            icon: Wallet,
+            label: "Comptable",
+            gradient: "bg-gradient-to-br from-violet-500 to-purple-400",
+            delay: 0.3
+        },
+
+        {
+            icon: BriefcaseIcon,
+            label: "Chef de Projet",
+            gradient: "bg-gradient-to-br from-indigo-500 to-purple-500",
+            delay: 0.2
+        }
+
+
+
+
+    ];
+    const handleCardClick = () => {
+        navigate('/EmployeeGallery'); // Redirige vers la route de gallery
+    };
 
     return (
-        <div className="bg-gray-100 min-h-screen">
-            <header className="bg-black text-white flex justify-between items-center h-20">
-            <div className="mb-6 text-center">
-                    <img src={require('./logo.png')} alt="Logo Mali Ingenov" className="w-24 h-24 object-cover" />
-            
+        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+            <header className="bg-gradient-to-r from-gray-900 to-gray-800 text-white">
+                <div className="container mx-auto px-6 py-4">
+                    <div className="flex justify-between items-center">
+                        <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <img
+                                src={require('./logo.png')}
+                                alt="Logo Mali Ingenov"
+                                className="w-14 h-14 object-contain"
+                            />
+                        </motion.div>
+                        <motion.div
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.5 }}
+                            className="text-sm font-light"
+                        >
+                            {currentDate}
+                        </motion.div>
+                    </div>
                 </div>
-                <div className="text-sm">{`Date : ${currentDate}`}</div>
             </header>
-            <main className="container mx-auto p-4">
-                <h1 className="text-2xl font-bold mb-6 text-center">Bienvenu dans Project Management de Mali-Ingenov</h1>
-                <div className="grid grid-cols-4 gap-4">
-                    <DashboardItem icon={User} label="Employé" color="bg-purple-500" isWide={true} />
-                    <DashboardItem icon={FileText} label="respensable facturation" color="bg-blue-500" />
-                    <DashboardItem icon={Users} label="Chef de groupe" color="bg-purple-500" />
-                    <DashboardItem icon={Keyboard} label="Agent de saisie" color="bg-blue-400" />
-                    <DashboardItem icon={DollarSign} label="Comptable" color="bg-blue-500" />
-                    <DashboardItem icon={Briefcase} label="Chef de projet" color="bg-blue-500" />
-                    <DashboardItem icon={Compass} label="Direction" color="bg-purple-500" />
+
+            <main className="container mx-auto px-6 py-12">
+                <motion.h1
+                    initial={{opacity: 0, y: -20}}
+                    animate={{opacity: 1, y: 0}}
+                    transition={{duration: 0.5}}
+                    className="text-4xl font-bold text-center mb-12 text-gray-800"
+                >
+                    Bienvenue dans Project Management de{" "}
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600">
+                        Mali-Ingenov
+                    </span>
+                </motion.h1>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 cursor-pointer mb-5">
+                    {cards.map((card, index) => (
+                        <DashboardItem
+                            key={index}
+                            icon={card.icon}
+                            label={card.label}
+                            gradient={card.gradient}
+                            delay={card.delay}
+                            onClick={handleCardClick}
+                        />
+                    ))}
                 </div>
+                <Footer/>
             </main>
+
+
         </div>
+
     );
+
 };
 
 export default WelcomeComponent;

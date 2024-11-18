@@ -1,5 +1,6 @@
 import React from 'react';
 import { Home, Eye, Edit, Star, Clock, ChevronDown, Search, User, LogOut } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const PointageList = () => {
   const pointages = [
@@ -14,10 +15,10 @@ const PointageList = () => {
         <div className="p-4">
           <h2 className="text-2xl font-bold mb-4">MALI INGÉNOV</h2>
           <nav>
-            <a href="#" className="flex items-center py-2 px-4 bg-blue-600 rounded"><Home className="mr-2" size={18} /> Accueil</a>
-            <a href="#" className="flex items-center py-2 px-4"><Eye className="mr-2" size={18} /> Consultation</a>
-            <a href="#" className="flex items-center py-2 px-4"><Edit className="mr-2" size={18} /> Imputation</a>
-            <a href="#" className="flex items-center py-2 px-4"><Star className="mr-2" size={18} /> Heures supplémentaires</a>
+            <Link to="#" className="flex items-center py-2 px-4 bg-blue-600 rounded"><Home className="mr-2" size={18} /> Accueil</Link>
+            <Link to="#" className="flex items-center py-2 px-4"><Eye className="mr-2" size={18} /> Consultation</Link>
+            <Link to="#" className="flex items-center py-2 px-4"><Edit className="mr-2" size={18} /> Imputation</Link>
+            <Link to="#" className="flex items-center py-2 px-4"><Star className="mr-2" size={18} /> Heures supplémentaires</Link>
           </nav>
         </div>
       </aside>

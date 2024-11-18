@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+// eslint-disable-next-line no-unused-vars
 import { Home, Briefcase, Users, Folder, Tag, UserCheck, Building, Truck, Calendar, Search, Plus, Edit, Settings } from 'lucide-react';
 
 const ListProject= () => {
@@ -26,10 +28,10 @@ const ListProject= () => {
             { icon: Building, label: 'Clients' },
             { icon: Truck, label: 'Fournisseurs' },
           ].map((item, index) => (
-            <a key={index} href="#" className="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-800">
+            <Link key={index} href="#" className="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-800">
               <item.icon className="mr-3 h-5 w-5" />
               {item.label}
-            </a>
+            </Link>
           ))}
         </nav>
         <div className="absolute bottom-0 w-64 p-4">

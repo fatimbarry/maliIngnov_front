@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+// eslint-disable-next-line no-unused-vars
 import { Home, Briefcase, Users, Layers, Award, UserCheck, Truck, Calendar as CalendarIcon } from 'lucide-react';
 import Calendar from 'react-calendar';  // Composant calendrier interactif
 import 'react-calendar/dist/Calendar.css';  // Import des styles par défaut

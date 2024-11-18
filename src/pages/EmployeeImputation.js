@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+// eslint-disable-next-line no-unused-vars
 import { Home, Eye, Edit, Star, Clock, User, LogOut, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const EmployeeImputation = () => {
@@ -16,10 +18,10 @@ const EmployeeImputation = () => {
         <div className="p-4">
           <h2 className="text-xl font-bold mb-4">MALI INGÉNOV</h2>
           <nav className="space-y-2">
-            <a href="#" className="flex items-center py-2 px-4 hover:bg-gray-800 rounded"><Home size={18} className="mr-2" /> Accueil</a>
-            <a href="#" className="flex items-center py-2 px-4 hover:bg-gray-800 rounded"><Eye size={18} className="mr-2" /> Consultation</a>
-            <a href="#" className="flex items-center py-2 px-4 bg-blue-600 rounded"><Edit size={18} className="mr-2" /> Imputation</a>
-            <a href="#" className="flex items-center py-2 px-4 hover:bg-gray-800 rounded"><Star size={18} className="mr-2" /> Heures supplémentaires</a>
+            <Link to="#" className="flex items-center py-2 px-4 hover:bg-gray-800 rounded"><Home size={18} className="mr-2" /> Accueil</Link>
+            <Link to="#" className="flex items-center py-2 px-4 hover:bg-gray-800 rounded"><Eye size={18} className="mr-2" /> Consultation</Link>
+            <Link to="#" className="flex items-center py-2 px-4 bg-blue-600 rounded"><Edit size={18} className="mr-2" /> Imputation</Link>
+            <Link to="#" className="flex items-center py-2 px-4 hover:bg-gray-800 rounded"><Star size={18} className="mr-2" /> Heures supplémentaires</Link>
           </nav>
         </div>
       </aside>

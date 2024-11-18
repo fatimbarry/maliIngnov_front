@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+// eslint-disable-next-line no-unused-vars
 import { Search, Edit, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const ClientList = () => {

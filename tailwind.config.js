@@ -6,95 +6,61 @@ module.exports = {
   ],
   prefix: "", // Aucun préfixe ajouté aux classes Tailwind
   theme: {
-    container: {
-      center: true, // Centre les conteneurs
-      padding: "2rem", // Ajoute un padding par défaut aux conteneurs
-      screens: {
-        "2xl": "1400px", // Définit une largeur maximale pour les écrans très larges
-      },
-    },
     extend: {
-      colors: {
-        // Couleurs personnalisées
-        blue: {
-          500: '#3B82F6',
-          600: '#2563EB',
-        },
-        green: {
-          500: '#10B981',
-          600: '#059669',
-        },
-        red: {
-          500: '#EF4444',
-          600: '#DC2626',
-        },
-        indigo: {
-          500: '#6366F1',
-          600: '#4F46E5',
-        },
-        yellow: {
-          500: '#F59E0B',
-          600: '#D97706',
-        },
-        gray: {
-          800: '#1F2937',
-          900: '#111827',
-        },
-        // Couleurs existantes basées sur les variables CSS
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
+      width: {
+        'full': '100%',
+      },
+      height: {
+        'full': '100%',
+      },
+      overflow: {
+        'hidden': 'hidden',
+      },
+      backgroundImage: {
+        'gradient-br': 'linear-gradient(to bottom right, var(--tw-gradient-stops))',
+      },
+      boxShadow: {
+        'xl': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+      },
+      transitionProperty: {
+        'shadow': 'box-shadow',
+      },
+      transitionDuration: {
+        '300': '300ms',
+      },
+      padding: {
+        '6': '1.5rem',
+      },
+      display: {
+        'flex': 'flex',
+        'flex-col': 'flex-column',
+      },
+      alignItems: {
+        'center': 'center',
+        'justify-center': 'center',
+      },
+      spacing: {
+        '4': '1rem',
+        '6': '1.5rem',
+      },
+      backgroundColor: {
+        'white/20': 'rgba(255, 255, 255, 0.2)',
       },
       borderRadius: {
-        lg: "var(--radius)", // Rayon de bordure personnalisé
-        md: "calc(var(--radius) - 2px)", // Rayon de bordure moyen
-        sm: "calc(var(--radius) - 4px)", // Petit rayon de bordure
+        'full': '9999px',
       },
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
+      textColor: {
+        'white': '#ffffff',
       },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out", // Animation pour les accordéons vers le bas
-        "accordion-up": "accordion-up 0.2s ease-out", // Animation pour les accordéons vers le haut
+      fontWeight: {
+        'medium': '500',
       },
-    },
-  },
-  plugins: [require("tailwindcss-animate")], // Plugin pour les animations personnalisées
+      letterSpacing: {
+        'wide': '0.025em',
+      },
+      textAlign: {
+        'center': 'center',
+      },
+    }
+  }
 };

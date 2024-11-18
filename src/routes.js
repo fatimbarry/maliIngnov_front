@@ -13,6 +13,7 @@ import EmployeeGallery from './pages/EmployeeGallery';
 import ClientList from './pages/ClientList';
 import PointageList from './pages/PointageList';
 import EmployeeImputation from './pages/EmployeeImputation';
+import EmployeeInterface from './pages/EmployeeInterface';
 
 function AppRoutes() {
     return (
@@ -20,9 +21,10 @@ function AppRoutes() {
             <Routes>
             
 
-                <Route path="/" element={<Login />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/EmployeeInterface" element={<EmployeeInterface />} />
                 <Route path="/employeeform" element={<EmployeeFormComponent/>} />
-                <Route path="/welcome" element={<WelcomeComponent />} />
+                <Route path="/" element={<WelcomeComponent />} />
                 <Route path="/EmployeeList" element={<EmployeeList />} />
                 <Route path="/AddProjectForm" element={<AddProjectForm />} />
                 <Route path="/AddClientForm" element={<AddClientForm />} />
