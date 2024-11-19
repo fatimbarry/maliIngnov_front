@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
-import { Search, Users } from 'lucide-react';
-import Footer from '../components/Footer';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Search, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../components/Footer';
 
 const EmployeeGallery = () => {
     const navigate = useNavigate();
+    const [employees, setEmployees] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [pagination, setPagination] = useState({
+        current_page: 1,
+        last_page: 1,
+        per_page: 8,
+        total: 0
+    });
+
     const currentDate = new Date().toLocaleString('fr-FR', {
         year: 'numeric',
         month: 'long',
@@ -15,47 +26,78 @@ const EmployeeGallery = () => {
         timeZone: 'Africa/Dakar'
     });
 
-    const [searchTerm, setSearchTerm] = useState('');
+    const fetchEmployees = useCallback(async (page = 1) => {
+        try {
+            setLoading(true);
+            const response = await fetch(`http://127.0.0.1:8000/api/users?page=${page}`, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
 
-    const employees = [
-        {
-            id: 1,
-            name: 'SABIR Abdellah',
-            photo: require('./fatima.jpg'),
-            role: 'Admin',
-            status: 'Absent'
-        },
-        {
-            id: 2,
-            name: 'TAHRI Hanae',
-            photo: require('./diarry.jpg'),
-            role: 'Chef de Projet',
-            status: 'Absent'
-        },
-        {
-            id: 3,
-            name: 'YARBAOLI Hicham',
-            photo: require('./moussou.jpg'),
-            role: 'Employe',
-            status: 'Absent'
-        },
-        {
-            id: 4,
-            name: 'hajer GAOUCHE',
-            photo: require('./mame saye.jpg'),
-            role: 'Chef de Groupe',
-            status: 'Absent'
-        },
-    ];
+            const result = await response.json();
+
+            if (result.success) {
+                setEmployees(result.data.data);
+                setPagination({
+                    current_page: result.data.current_page,
+                    last_page: result.data.last_page,
+                    per_page: result.data.per_page,
+                    total: result.data.total
+                });
+                setError(null);
+            } else {
+                throw new Error(result.message || 'Erreur de chargement');
+            }
+        } catch (err) {
+            console.error('Erreur de chargement:', err);
+            setError(err.message || 'Erreur lors du chargement des données');
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        fetchEmployees();
+    }, [fetchEmployees]);
+
+    const handlePageChange = (newPage) => {
+        fetchEmployees(newPage);
+    };
 
     const filteredEmployees = employees.filter(employee =>
-        employee.name.toLowerCase().includes(searchTerm.toLowerCase())
+        employee.nom.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    // Fonction pour rediriger vers la page de login
     const handlePhotoClick = (employeeId) => {
-        navigate('/login', { state: { employeeId } }); // Passer l'ID de l'employé si nécessaire
+        navigate('/login', { state: { employeeId } });
     };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+                    <strong className="font-bold">Erreur! </strong>
+                    <span>{error}</span>
+                    <button
+                        onClick={() => fetchEmployees()}
+                        className="ml-4 bg-red-500 text-white px-3 py-1 rounded"
+                    >
+                        Réessayer
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="bg-gray-100 min-h-screen">
@@ -85,35 +127,69 @@ const EmployeeGallery = () => {
                 <div className="bg-white rounded-lg shadow-md p-4">
                     <div className="flex items-center mb-4">
                         <Users className="h-6 w-6 mr-2 text-gray-600" />
-                        <h2 className="text-xl font-semibold">Liste du Persoonel MaliIngenov</h2>
+                        <h2 className="text-xl font-semibold">Liste du Personnel</h2>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        {filteredEmployees.map((employee) => (
-                            <div key={employee.id} className="relative bg-white rounded-lg overflow-hidden shadow border cursor-pointer mb-5"
-                                 onClick={() => handlePhotoClick(employee.id)} // Gérer le clic sur la photo
-                            >
-                                <img
-                                    src={employee.photo}
-                                    alt={employee.name}
-                                    className="w-full h-48 object-cover"
-                                />
-                                <div className="absolute top-2 right-2">
-                                    <div className="bg-orange-500 text-white px-3 py-1 rounded text-sm">
-                                        {employee.status}
+                    {filteredEmployees.length === 0 ? (
+                        <div className="text-center py-8 text-gray-500">
+                            Aucun employé trouvé
+                        </div>
+                    ) : (
+                        <>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                {filteredEmployees.map((employee) => (
+                                    <div
+                                        key={employee.id}
+                                        className="relative bg-white rounded-lg overflow-hidden shadow border cursor-pointer hover:shadow-lg transition-shadow"
+                                        onClick={() => handlePhotoClick(employee.id)}
+                                    >
+                                        <img
+                                            src={employee.photo || '/Coach Barry.png'}
+                                            alt={employee.nom}
+                                            className="w-full h-48 object-cover"
+                                            onError={(e) => {
+                                                e.target.src = '/Coach Barry.png';
+                                            }}
+                                        />
+                                        <div className="absolute top-2 right-2">
+                                            <div className="bg-orange-500 text-white px-3 py-1 rounded text-sm">
+                                                {employee.status}
+                                            </div>
+                                        </div>
+                                        <div className="p-4">
+                                            <h3 className="font-semibold text-lg text-gray-700 truncate">
+                                                {employee.prenom} {employee.nom}
+                                            </h3>
+                                            <div
+                                                className="bg-gray-200 text-gray-600 text-sm px-2 py-1 rounded inline-block mt-2">
+                                                {employee.role}
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="p-4">
-                                    <div className="flex justify-between items-start mb-2">
-                                        <h3 className="font-semibold text-lg text-gray-500">{employee.name}</h3>
-                                    </div>
-                                    <div className="bg-gray-200 text-gray-600 text-sm px-2 py-1 rounded inline-block">
-                                        {employee.role}
-                                    </div>
-                                </div>
+                                ))}
                             </div>
-                        ))}
-                    </div>
+
+                            <div className="flex justify-center items-center mt-6 space-x-4">
+                                <button
+                                    onClick={() => handlePageChange(pagination.current_page - 1)}
+                                    disabled={pagination.current_page === 1}
+                                    className="flex items-center justify-center p-2 bg-blue-500 text-white rounded disabled:opacity-50 hover:bg-blue-600 transition"
+                                >
+                                    <ChevronLeft className="mr-2" /> Précédent
+                                </button>
+                                <span className="text-gray-600">
+                                    Page {pagination.current_page} / {pagination.last_page}
+                                </span>
+                                <button
+                                    onClick={() => handlePageChange(pagination.current_page + 1)}
+                                    disabled={pagination.current_page === pagination.last_page}
+                                    className="flex items-center justify-center p-2 bg-blue-500 text-white rounded disabled:opacity-50 hover:bg-blue-600 transition"
+                                >
+                                    Suivant <ChevronRight className="ml-2" />
+                                </button>
+                            </div>
+                        </>
+                    )}
                 </div>
                 <Footer/>
             </main>

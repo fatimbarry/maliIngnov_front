@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileText, Calendar, Hand, Power, User } from 'lucide-react';
+import { FileText, Calendar, Hand, Briefcase, User } from 'lucide-react';
 import Footer from '../components/Footer';
 
 const EmployeeInterface= () => {
@@ -7,7 +7,7 @@ const EmployeeInterface= () => {
     { id: 1, title: 'Consultation', icon: FileText, color: 'bg-yellow-500', size: 'col-span-1' },
     { id: 2, title: 'Imputation', icon: Calendar, color: 'bg-blue-500', size: 'col-span-1' },
     { id: 3, title: 'Pointage', icon: Hand, color: 'bg-red-500', size: 'col-span-1' },
-    { id: 4, title: 'Déconnexion', icon: Power, color: 'bg-gray-700', size: 'col-span-1' },
+    { id: 4, title: 'Projets', icon: Briefcase, color: 'bg-gray-700', size: 'col-span-1' },
   ];
 
   return (

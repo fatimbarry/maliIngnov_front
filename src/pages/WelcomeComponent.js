@@ -99,7 +99,7 @@ const WelcomeComponent = () => {
                             <img
                                 src={require('./logo.png')}
                                 alt="Logo Mali Ingenov"
-                                className="w-14 h-14 object-contain"
+                                className="mx-auto w-14 h-14 object-cover"
                             />
                         </motion.div>
                         <motion.div

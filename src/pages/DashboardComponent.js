@@ -1,54 +1,183 @@
 import React from 'react';
-import { User, FileText, Briefcase, Users, Award, LogOut } from 'lucide-react';
+import { Box, CheckCircle, Circle, Users } from 'lucide-react';
 
-const NavItem = ({ text, count }) => (
-    <div className="flex items-center px-4 py-2 text-white text-sm border-r border-gray-700">
-        {text}
-        {count && <span className="ml-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">{count}</span>}
-    </div>
-);
-
-const DashboardItem = ({ icon: Icon, label, color, className }) => (
-    <div className={`flex flex-col items-center justify-center p-4 ${color} ${className}`}>
-        <Icon className="text-green mb-2" size={40} />
-        <span className="text-black text-sm font-semibold">{label}</span>
-    </div>
-);
+// Composant Card personnalisé
+const Card = ({ children, className = '' }) => {
+    return (
+        <div className={`bg-white rounded-xl shadow-sm border border-gray-100 ${className}`}>
+            {children}
+        </div>
+    );
+};
 
 const DashboardComponent = () => {
     return (
-        <div className="bg-gray-100 min-h-screen">
-            <header className="bg-gray-900 text-white p-2 flex justify-between items-center">
-                <div className="flex items-center">
-                <img src={require('./logo.png')} alt="Logo Mali Ingenov" className="mx-auto w-24 h-24 object-cover" />
-                
-                </div>
-                <nav className="flex">
-                    <NavItem text="Tâches affectées" count={7} />
-                    <NavItem text="Imputation à Valider" count={3} />
-                    <NavItem text="Imputation à Valider" count={2} />
-                    <NavItem text="Pièces Débours à valider" count={2} />
-                    <NavItem text="Projets en attente" count={1} />
-                </nav>
-                <div className="flex items-center text-sm">
-                    <span className="mr-4">admin@admin.com</span>
-                    <span>Profil</span>
-                    <span className="mx-2">|</span>
-                    <span>Changer Mot de passe</span>
-                </div>
-            </header>
-            <main className="container mx-auto p-3">
-                <div className="grid grid-cols-4 gap-4 h-screen">
-                    <DashboardItem icon={User} label="Employé" className="col-span-1 row-span-1" />
-                    <DashboardItem icon={FileText} label="Fournisseur" className="col-span-1 row-span-1" />
-                    <DashboardItem icon={Users} label="Client" className="col-span-1 row-span-1" />
-                    <DashboardItem icon={FileText} label="Catégorie" className="col-span-1 row-span-1" />
-                    <DashboardItem icon={Briefcase} label="Projet" className="col-span-1 row-span-1" />
-                    <DashboardItem icon={Award} label="Qualification" className="col-span-1 row-span-1" />
-                    <DashboardItem icon={Users} label="Groupe" className="col-span-1 row-span-1" />
-                    <DashboardItem icon={LogOut} label="Déconnexion" className="col-span-1 row-span-1" />
-                </div>
-            </main>
+        <div className="min-h-screen bg-gray-50/50 p-8">
+            {/* Header */}
+            <h1 className="text-2xl font-semibold text-blue-900 mb-8">Titre de la page</h1>
+
+            {/* Projects and Tasks Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                {/* Projects Card */}
+                <Card className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                        <div className="p-2 bg-emerald-100 rounded-lg">
+                            <Box className="w-6 h-6 text-emerald-500" />
+                        </div>
+                        <h2 className="text-xl text-orange-500 font-medium">Projets</h2>
+                    </div>
+
+                    <div className="grid grid-cols-4 gap-4">
+                        <div>
+                            <div className="text-3xl font-bold text-blue-900">44</div>
+                            <div className="text-gray-500 text-sm">Total</div>
+                        </div>
+                        <div>
+                            <div className="text-3xl font-bold text-orange-500">16</div>
+                            <div className="text-gray-500 text-sm">En cours</div>
+                        </div>
+                        <div>
+                            <div className="text-3xl font-bold text-pink-500">18</div>
+                            <div className="text-gray-500 text-sm">En pause</div>
+                        </div>
+                        <div>
+                            <div className="text-3xl font-bold text-emerald-500">14</div>
+                            <div className="text-gray-500 text-sm">Terminés</div>
+                        </div>
+                    </div>
+                </Card>
+
+                {/* Tasks Card */}
+                <Card className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                        <div className="p-2 bg-blue-100 rounded-lg">
+                            <CheckCircle className="w-6 h-6 text-blue-500" />
+                        </div>
+                        <h2 className="text-xl text-orange-500 font-medium">Tâches</h2>
+                    </div>
+
+                    <div className="grid grid-cols-4 gap-4">
+                        <div>
+                            <div className="text-3xl font-bold text-blue-900">53</div>
+                            <div className="text-gray-500 text-sm">Total</div>
+                        </div>
+                        <div>
+                            <div className="text-3xl font-bold text-orange-500">22</div>
+                            <div className="text-gray-500 text-sm">En cours</div>
+                        </div>
+                        <div>
+                            <div className="text-3xl font-bold text-pink-500">13</div>
+                            <div className="text-gray-500 text-sm">En pause</div>
+                        </div>
+                        <div>
+                            <div className="text-3xl font-bold text-emerald-500">18</div>
+                            <div className="text-gray-500 text-sm">Terminées</div>
+                        </div>
+                    </div>
+                </Card>
+            </div>
+
+            {/* Bakelistes Section */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                <Card className="p-6">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <div className="text-3xl font-bold text-gray-700">42</div>
+                            <div className="text-gray-500 text-sm">Total Bakelistes</div>
+                        </div>
+                        <div className="p-2 bg-pink-100 rounded-lg">
+                            <Users className="w-6 h-6 text-pink-500" />
+                        </div>
+                    </div>
+                </Card>
+
+                <Card className="p-6">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <div className="text-3xl font-bold text-gray-700">12</div>
+                            <div className="text-gray-500 text-sm">Bakelistes actifs</div>
+                        </div>
+                        <div className="p-2 bg-blue-100 rounded-lg">
+                            <Users className="w-6 h-6 text-blue-500" />
+                        </div>
+                    </div>
+                </Card>
+
+                <Card className="p-6">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <div className="text-3xl font-bold text-gray-700">25</div>
+                            <div className="text-gray-500 text-sm">Bakelistes Payés</div>
+                        </div>
+                        <div className="p-2 bg-emerald-100 rounded-lg">
+                            <Users className="w-6 h-6 text-emerald-500" />
+                        </div>
+                    </div>
+                </Card>
+
+                <Card className="p-6">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <div className="text-3xl font-bold text-gray-700">13</div>
+                            <div className="text-gray-500 text-sm">Bakelistes Retirés</div>
+                        </div>
+                        <div className="p-2 bg-red-100 rounded-lg">
+                            <Users className="w-6 h-6 text-red-500" />
+                        </div>
+                    </div>
+                </Card>
+            </div>
+
+            {/* Deliveries Section */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <Card className="p-6">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <div className="text-3xl font-bold text-gray-700">11</div>
+                            <div className="text-gray-500 text-sm">Total Livraisons</div>
+                        </div>
+                        <div className="p-2 bg-purple-100 rounded-lg">
+                            <Circle className="w-6 h-6 text-purple-500" />
+                        </div>
+                    </div>
+                </Card>
+
+                <Card className="p-6">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <div className="text-3xl font-bold text-gray-700">14</div>
+                            <div className="text-gray-500 text-sm">Livraisons Validées</div>
+                        </div>
+                        <div className="p-2 bg-orange-100 rounded-lg">
+                            <Circle className="w-6 h-6 text-orange-500" />
+                        </div>
+                    </div>
+                </Card>
+
+                <Card className="p-6">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <div className="text-3xl font-bold text-gray-700">14</div>
+                            <div className="text-gray-500 text-sm">Livraisons Rejetées</div>
+                        </div>
+                        <div className="p-2 bg-blue-100 rounded-lg">
+                            <Circle className="w-6 h-6 text-blue-500" />
+                        </div>
+                    </div>
+                </Card>
+
+                <Card className="p-6">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <div className="text-3xl font-bold text-gray-700">14</div>
+                            <div className="text-gray-500 text-sm">Livraisons Rejetées</div>
+                        </div>
+                        <div className="p-2 bg-blue-100 rounded-lg">
+                            <Circle className="w-6 h-6 text-blue-500" />
+                        </div>
+                    </div>
+                </Card>
+            </div>
         </div>
     );
 };
