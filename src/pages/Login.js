@@ -54,25 +54,34 @@ const LoginComponent = () => {
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
                     },
-                    withCredentials: true
+                    withCredentials: true,
                 }
             );
 
             if (response.data.token) {
+                // Stocker le token dans localStorage
                 localStorage.setItem('token', response.data.token);
+
+                // Stocker l'ID de l'utilisateur
+                const userId = response.data.user?.id; // Assurez-vous que 'id' est la bonne clé
+                if (userId) {
+                    localStorage.setItem('user_id', userId);
+                }
+
+                // Notification de succès
                 showToast('Connexion réussie !', 'success');
 
-                // Add role-based navigation similar to original implementation
+                // Redirection basée sur le rôle
                 const role = response.data.user?.role;
                 switch (role) {
                     case 'Admin':
                         navigate('/DashboardComponent');
                         break;
                     case 'Comptable':
-                        navigate('/EmployeeInterface');
+                        navigate('/comptable-dashboard');
                         break;
                     case 'Chef_de_projet':
                         navigate('/chef-projet-dashboard');
@@ -83,9 +92,7 @@ const LoginComponent = () => {
                     default:
                         navigate('/');
                 }
-
-            }else {
-
+            } else {
                 showToast('Connexion échouée. Veuillez vérifier vos identifiants.', 'error');
             }
         } catch (error) {
@@ -94,29 +101,25 @@ const LoginComponent = () => {
             if (error.response) {
                 switch (error.response.status) {
                     case 401:
-
                         showToast('Identifiants incorrects', 'error');
                         break;
                     case 422:
-
                         showToast('Veuillez vérifier vos informations', 'error');
                         break;
                     case 429:
-
                         showToast('Trop de tentatives. Veuillez réessayer plus tard', 'error');
                         break;
                     default:
-
                         showToast('Une erreur est survenue. Veuillez réessayer.', 'error');
                 }
             } else {
-
                 showToast('Une erreur de réseau est survenue', 'error');
             }
         } finally {
             setIsLoading(false);
         }
     };
+
 
     return (
         <div className="bg-gray min-h-screen flex items-center justify-center">

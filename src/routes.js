@@ -14,6 +14,7 @@ import ClientList from './pages/ClientList';
 import PointageList from './pages/PointageList';
 import EmployeeImputation from './pages/EmployeeImputation';
 import EmployeeInterface from './pages/EmployeeInterface';
+import MaliIngenovWorkInterface from './pages/MaliIngenovWorkInterface';
 
 function AppRoutes() {
     return (
@@ -22,6 +23,7 @@ function AppRoutes() {
             
 
                 <Route path="/login" element={<Login />} />
+                <Route path="/MaliIngenovWorkInterface" element={<MaliIngenovWorkInterface />} />
                 <Route path="/EmployeeInterface" element={<EmployeeInterface />} />
                 <Route path="/employeeform" element={<EmployeeFormComponent/>} />
                 <Route path="/" element={<WelcomeComponent />} />

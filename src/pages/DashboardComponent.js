@@ -1,5 +1,7 @@
 import React from 'react';
 import { Box, CheckCircle, Circle, Users } from 'lucide-react';
+import Footer from '../components/Footer';
+import Navbar from '../components/Navbar';
 
 // Composant Card personnalisé
 const Card = ({ children, className = '' }) => {
@@ -13,6 +15,7 @@ const Card = ({ children, className = '' }) => {
 const DashboardComponent = () => {
     return (
         <div className="min-h-screen bg-gray-50/50 p-8">
+            <Navbar/>
             {/* Header */}
             <h1 className="text-2xl font-semibold text-blue-900 mb-8">Titre de la page</h1>
 
@@ -178,6 +181,7 @@ const DashboardComponent = () => {
                     </div>
                 </Card>
             </div>
+            <Footer/>
         </div>
     );
 };
