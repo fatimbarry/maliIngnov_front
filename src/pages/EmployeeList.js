@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import {
-  Table,
-  Edit,
-  Trash2,
-  ChevronLeft,
-  ChevronRight,
-  Home,
-  Briefcase,
-  Users,
-  Award,
+    Table,
+    Edit,
+    Trash2,
+    ChevronLeft,
+    ChevronRight,
+    Home,
+    Briefcase,
+    Users,
+    Award,
     PlusCircle,
-  UserCheck,
-  Truck,
-  Calendar as CalendarIcon,
+    UserCheck,
+    Truck,
+    Calendar as CalendarIcon, LayoutDashboard,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
@@ -90,17 +90,17 @@ const EmployeeList = () => {
             <div className="flex flex-1">
                 {/* Sidebar */}
                 <aside className="w-64 bg-gray-900 min-h-full">
-                    <div className="p-4">
-                        <MenuItem icon={Home} label="Accueil" to="/" />
-                        <MenuItem icon={Briefcase} label="Projet" to="/projet" />
-                        <MenuItem icon={Users} label="Employés" to="/EmployeeList" />
-                        <MenuItem icon={Users} label="Groupes" to="/groupes" />
-                        <MenuItem icon={Award} label="Qualifications" to="/qualifications" />
-                        <MenuItem icon={UserCheck} label="Clients" to="/clients" />
-                        <MenuItem icon={Truck} label="Fournisseurs" to="/fournisseurs" />
+                    <div className="p-4 space-y-2">
+                        <MenuItem icon={Home} label="Accueil" to="/"/>
+                        <MenuItem icon={Briefcase} label="Projet" to="/ListProject"/>
+                        <MenuItem icon={Users} label="Employés" to="/EmployeeList"/>
+                        <MenuItem icon={Award} label="Department" to="/Department"/>
+                        <MenuItem icon={LayoutDashboard} label="Dashboard" to="/Dashboard"/>
+                        <MenuItem icon={UserCheck} label="Clients" to="/ClientList"/>
+                        <MenuItem icon={Truck} label="Fournisseurs" to="/fournisseurs"/>
                     </div>
                     <div className="mt-8 p-4">
-                        <CalendarIcon className="text-white mb-2" />
+                        <CalendarIcon className="text-white mb-2"/>
                         <Calendar
                             className="bg-white rounded-lg p-2"
                             onChange={setDate}
@@ -114,7 +114,7 @@ const EmployeeList = () => {
                     <div className="bg-gray-100 p-4 rounded-lg shadow-md">
                         <div className="flex justify-between items-center mb-4">
                             <div className="flex items-center">
-                                <Table className="w-5 h-5 mr-2" />
+                                <Table className="w-5 h-5 mr-2"/>
                                 <h2 className="text-lg font-semibold text-gray-800">
                                     Liste des employés
                                 </h2>

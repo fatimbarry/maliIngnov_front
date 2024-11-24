@@ -1,5 +1,17 @@
 import React, { useState } from 'react';
-import { Box, CheckCircle, Circle, Users, Home, Briefcase, Award, UserCheck, Truck, Calendar as CalendarIcon } from 'lucide-react';
+import {
+    Box,
+    CheckCircle,
+    Circle,
+    Users,
+    Home,
+    Briefcase,
+    Award,
+    UserCheck,
+    Truck,
+    Calendar as CalendarIcon,
+    LayoutDashboard
+} from 'lucide-react';
 import Calendar from 'react-calendar';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
@@ -37,13 +49,13 @@ const DashboardComponent = () => {
             <div className="flex flex-1">
                 {/* Sidebar */}
                 <aside className="w-64 bg-gray-900 min-h-full">
-                    <div className="p-4">
+                    <div className="p-4 space-y-2">
                         <MenuItem icon={Home} label="Accueil" to="/"/>
-                        <MenuItem icon={Briefcase} label="Projet" to="/projet"/>
+                        <MenuItem icon={Briefcase} label="Projet" to="/ListProject"/>
                         <MenuItem icon={Users} label="Employés" to="/EmployeeList"/>
-                        <MenuItem icon={Users} label="Groupes" to="/groupes"/>
-                        <MenuItem icon={Award} label="Qualifications" to="/qualifications"/>
-                        <MenuItem icon={UserCheck} label="Clients" to="/clients"/>
+                        <MenuItem icon={Award} label="Department" to="/Department"/>
+                        <MenuItem icon={LayoutDashboard} label="Dashboard" to="/Dashboard"/>
+                        <MenuItem icon={UserCheck} label="Clients" to="/ClientList"/>
                         <MenuItem icon={Truck} label="Fournisseurs" to="/fournisseurs"/>
                     </div>
                     <div className="mt-8 p-4">
