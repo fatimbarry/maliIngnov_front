@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 //import Home from './pages/Home';
 import Login from './pages/Login';
-import EmployeeFormComponent from './pages/EmployeeFormComponent';
+import EmployeeFormComponent from './pages/AddEmployeeModal';
 import WelcomeComponent from './pages/WelcomeComponent';
 import EmployeeList from './pages/EmployeeList';
 import AddProjectForm from './pages/AddProjectForm';
