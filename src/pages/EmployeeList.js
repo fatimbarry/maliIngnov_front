@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Table,
     Edit,
@@ -12,83 +12,170 @@ import {
     PlusCircle,
     UserCheck,
     Truck,
-    Calendar as CalendarIcon, LayoutDashboard,
+    Calendar as CalendarIcon,
+    LayoutDashboard,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Calendar from 'react-calendar';
 import Footer from '../components/Footer';
 import AddEmployeeModal from "./AddEmployeeModal";
+import Swal from 'sweetalert2';
 
 const MenuItem = ({ icon: Icon, label, to }) => {
-  return (
-      <Link
-          to={to}
-          className="flex items-center space-x-2 text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg p-2 transition-colors"
-      >
-        <Icon className="w-5 h-5" />
-        <span>{label}</span>
-      </Link>
-  );
+    return (
+        <Link
+            to={to}
+            className="flex items-center space-x-2 text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg p-2 transition-colors"
+        >
+            <Icon className="w-5 h-5" />
+            <span>{label}</span>
+        </Link>
+    );
 };
 
 const EmployeeList = () => {
-  const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState(new Date());
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [employees, setEmployees] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [recordsPerPage, setRecordsPerPage] = useState(10);
+    const [totalRecords, setTotalRecords] = useState(0);
+
+    useEffect(() => {
+        fetchEmployees();
+    }, [currentPage, recordsPerPage, searchTerm]);
+
+    const fetchEmployees = async () => {
+        try {
+            setLoading(true);
+            const response = await fetch(
+                `http://localhost:8000/api/users?page=${currentPage}&per_page=${recordsPerPage}&search=${searchTerm}`
+            );
+
+            if (!response.ok) {
+                throw new Error('Erreur lors de la récupération des données');
+            }
+
+            const data = await response.json();
+
+            // Assurez-vous d'extraire les utilisateurs du bon niveau
+            setEmployees(data.data.data); // Accès au tableau des utilisateurs
+            setTotalPages(Math.ceil(data.data.total / recordsPerPage));
+            setTotalRecords(data.data.total);
+
+            setLoading(false);
+        } catch (err) {
+            setError(err.message);
+            setLoading(false);
+        }
+    };
+
+    const showToast = (message, type = "success") => {
+        Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: type,
+            title: message,
+            showConfirmButton: false,
+            timer: 4000,
+            timerProgressBar: true,
+        });
+    };
+
+
     const handleOpenModal = () => {
-        console.log("Ouverture du modal pour ajouter un employé");
-        setIsModalOpen(true); // Ouvre le modal
+        setIsModalOpen(true);
     };
 
     const handleCloseModal = () => {
-        setIsModalOpen(false); // Ferme le modal
+        setIsModalOpen(false);
+        fetchEmployees(); // Actualiser la liste après l'ajout
     };
-  const employees = [
-    {
-      name: 'Hajar GAOUCHE',
-      address: 'Hay Salam',
-      city: 'Rabat',
-      group: 'Groupe AA',
-      category: 'Techniciens',
-      email: 'sabir01abdel@gmail.com',
-      phone: '0673525646',
-    },
-    {
-      name: 'Tahri Hanae',
-      address: 'Charaf',
-      city: 'Salé',
-      group: 'Groupe AA',
-      category: 'Techniciens',
-      email: 'gaouche.hajar@gmail.com',
-      phone: '0673525646',
-    },
-    {
-      name: 'Sabir Abdelilah',
-      address: 'kkkfhoi',
-      city: 'Agadir',
-      group: 'Groupe B',
-      category: 'Ingénieurs',
-      email: 'kkkk@kkk.com',
-      phone: '0673525646',
-    },
-    {
-      name: 'Yahiaoui Hicham',
-      address: 'ksfkj',
-      city: 'Safi',
-      group: 'Groupe B',
-      category: 'Techniciens',
-      email: 'sabir01abdel@gmail.com',
-      phone: '0673525646',
-    },
-  ];
+
+    const handleDelete = async (id) => {
+        try {
+            const confirmResult = await Swal.fire({
+                title: 'Confirmer la suppression',
+                text: 'Voulez-vous vraiment supprimer cet employé ?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Oui, supprimer',
+                cancelButtonText: 'Annuler'
+            });
+
+            if (confirmResult.isConfirmed) {
+                const response = await fetch(`http://localhost:8000/api/users/delete/${id}`, {
+                    method: 'DELETE',
+                });
+
+                if (response.ok) {
+                    showToast('Employé supprimé avec succès', 'success');
+                    fetchEmployees();
+                } else {
+                    throw new Error('Erreur lors de la suppression');
+                }
+            }
+        } catch (err) {
+            showToast(err.message, 'error');
+        }
+    };
+
+    const handleModify = async (id, updatedData) => {
+        try {
+            const confirmResult = await Swal.fire({
+                title: 'Confirmer la modification',
+                text: 'Voulez-vous vraiment modifier cet employé ?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui, modifier',
+                cancelButtonText: 'Annuler'
+            });
+
+            if (confirmResult.isConfirmed) {
+                const response = await fetch(`http://localhost:8000/api/users/update/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updatedData)
+                });
+
+                if (response.ok) {
+                    showToast('Employé modifié avec succès', 'success');
+                    fetchEmployees();
+                } else {
+                    throw new Error('Erreur lors de la modification');
+                }
+            }
+        } catch (err) {
+            showToast(err.message, 'error');
+        }
+    };
+
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+        setCurrentPage(1);
+    };
+
+    const handleRecordsPerPageChange = (e) => {
+        setRecordsPerPage(parseInt(e.target.value));
+        setCurrentPage(1);
+    };
 
     return (
         <div className="min-h-screen flex flex-col">
-            {/* Navbar */}
             <Navbar />
 
             <div className="flex flex-1">
-                {/* Sidebar */}
                 <aside className="w-64 bg-gray-900 min-h-full">
                     <div className="p-4 space-y-2">
                         <MenuItem icon={Home} label="Accueil" to="/"/>
@@ -109,12 +196,17 @@ const EmployeeList = () => {
                     </div>
                 </aside>
 
-                {/* Main Content */}
                 <main className="flex-1 p-8 bg-gray-50">
+                    {error && (
+                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                            {error}
+                        </div>
+                    )}
+
                     <div className="bg-gray-100 p-4 rounded-lg shadow-md">
                         <div className="flex justify-between items-center mb-4">
                             <div className="flex items-center">
-                                <Table className="w-5 h-5 mr-2"/>
+                                <Table className="w-5 h-5 mr-2" />
                                 <h2 className="text-lg font-semibold text-gray-800">
                                     Liste des employés
                                 </h2>
@@ -127,20 +219,21 @@ const EmployeeList = () => {
                                     <PlusCircle className="w-5 h-5 mr-2" />
                                     Ajouter
                                 </button>
-                                {isModalOpen && <AddEmployeeModal onClose={handleCloseModal} />}
                             </div>
                         </div>
 
-                        {/* Table Section */}
                         <div className="bg-white rounded-md overflow-hidden">
-                            {/* Search and Filters */}
                             <div className="flex justify-between items-center p-3 border-b">
                                 <div className="flex items-center">
                                     <span className="mr-2">Afficher</span>
-                                    <select className="border rounded px-2 py-1">
-                                        <option>10</option>
-                                        <option>20</option>
-                                        <option>50</option>
+                                    <select
+                                        className="border rounded px-2 py-1"
+                                        value={recordsPerPage}
+                                        onChange={handleRecordsPerPageChange}
+                                    >
+                                        <option value={10}>10</option>
+                                        <option value={20}>20</option>
+                                        <option value={50}>50</option>
                                     </select>
                                     <span className="ml-2">Enregistrements</span>
                                 </div>
@@ -150,72 +243,91 @@ const EmployeeList = () => {
                                         type="text"
                                         className="border rounded px-2 py-1"
                                         placeholder="Recherche..."
+                                        value={searchTerm}
+                                        onChange={handleSearchChange}
                                     />
                                 </div>
                             </div>
 
-                            {/* Table */}
-                            <table className="w-full">
-                                <thead className="bg-gray-100">
-                                <tr>
-                                    <th className="px-4 py-2 text-left">Nom et Prénom</th>
-                                    <th className="px-4 py-2 text-left">Adresse</th>
-                                    <th className="px-4 py-2 text-left">Ville</th>
-                                    <th className="px-4 py-2 text-left">Groupe</th>
-                                    <th className="px-4 py-2 text-left">Catégorie</th>
-                                    <th className="px-4 py-2 text-left">E-mail</th>
-                                    <th className="px-4 py-2 text-left">Téléphone</th>
-                                    <th className="px-4 py-2 text-left">Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {employees.map((employee, index) => (
-                                    <tr
-                                        key={index}
-                                        className="border-b hover:bg-gray-50"
-                                    >
-                                        <td className="px-4 py-2">{employee.name}</td>
-                                        <td className="px-4 py-2">{employee.address}</td>
-                                        <td className="px-4 py-2">{employee.city}</td>
-                                        <td className="px-4 py-2">{employee.group}</td>
-                                        <td className="px-4 py-2">{employee.category}</td>
-                                        <td className="px-4 py-2">{employee.email}</td>
-                                        <td className="px-4 py-2">{employee.phone}</td>
-                                        <td className="px-4 py-2">
-                                            <button className="text-blue-500 hover:text-blue-700 mr-2">
-                                                <Edit className="w-4 h-4" />
-                                            </button>
-                                            <button className="text-red-500 hover:text-red-700">
-                                                <Trash2 className="w-4 h-4" />
-                                            </button>
-                                        </td>
+                            {loading ? (
+                                <div className="text-center py-4">Chargement...</div>
+                            ) : (
+                                <table className="w-full">
+                                    <thead className="bg-gray-100">
+                                    <tr>
+                                        <th className="px-4 py-2 text-left">Nom et Prénom</th>
+                                        <th className="px-4 py-2 text-left">Adresse Email</th>
+                                        <th className="px-4 py-2 text-left">Poste</th>
+                                        <th className="px-4 py-2 text-left">Statut</th>
+                                        <th className="px-4 py-2 text-left">Department</th>
+                                        <th className="px-4 py-2 text-left">Role</th>
+                                        <th className="px-4 py-2 text-left">Date Embauche</th>
+                                        <th className="px-4 py-2 text-left">Action</th>
                                     </tr>
-                                ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                    {Array.isArray(employees) && employees.map((employee) => (
+                                        <tr key={employee.id} className="border-b hover:bg-gray-50">
+                                            <td className="px-4 py-2">{employee.prenom} {employee.nom} </td>
+                                            <td className="px-4 py-2">{employee.email || 'Non défini'}</td>
+                                            <td className="px-4 py-2">{employee.post || 'Non défini'}</td>
+                                            <td className="px-4 py-2">{employee.status || 'Non défini'}</td>
+                                            <td className="px-4 py-2">{employee.department?.nom || 'Non défini'}</td>
+                                            <td className="px-4 py-2">{employee.role || 'Non défini'}</td>
+                                            <td className="px-4 py-2">{employee.date_Emb || 'Non défini'}</td>
+                                            <td className="px-4 py-2">
+                                                <button
+                                                    className="text-blue-500 hover:text-blue-700 mr-2"
+                                                    onClick={() => handleModify(employee.id)}
+                                                >
+                                                    <Edit className="w-4 h-4" />
+                                                </button>
+                                                <button
+                                                    className="text-red-500 hover:text-red-700"
+                                                    onClick={() => handleDelete(employee.id)}
+                                                >
+                                                    <Trash2 className="w-4 h-4" />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table>
+                            )}
 
-                            {/* Pagination */}
                             <div className="flex justify-between items-center p-3 border-t">
-                                <div>De 1 à 4 sur 4 enregistrements</div>
+                                <div>
+                                    De {((currentPage - 1) * recordsPerPage) + 1} à {Math.min(currentPage * recordsPerPage, totalRecords)} sur {totalRecords} enregistrements
+                                </div>
                                 <div className="flex items-center">
-                                    <button className="border rounded px-3 py-1 mr-2 hover:bg-gray-100">
+                                    <button
+                                        className="border rounded px-3 py-1 mr-2 hover:bg-gray-100"
+                                        onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                        disabled={currentPage === 1}
+                                    >
                                         <ChevronLeft className="w-4 h-4" />
                                     </button>
-                                    <button className="border rounded px-3 py-1 hover:bg-gray-100">
+                                    <button
+                                        className="border rounded px-3 py-1 hover:bg-gray-100"
+                                        onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                                        disabled={currentPage === totalPages}
+                                    >
                                         <ChevronRight className="w-4 h-4" />
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    {isModalOpen && <AddEmployeeModal onClose={handleCloseModal} />}
+
                 </main>
             </div>
-
             {/* Footer */}
-            <Footer />
+            <Footer/>
         </div>
     );
-
 };
 
 export default EmployeeList;
+

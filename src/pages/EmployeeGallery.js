@@ -103,7 +103,7 @@ const EmployeeGallery = () => {
         <div className="bg-gray-100 min-h-screen">
             <header className="bg-gray-800 text-white p-4">
                 <div className="container mx-auto flex justify-between items-center">
-                    <h1 className="text-xl font-bold">MAROC INGENOV</h1>
+                    <h1 className="text-xl font-bold">MALI INGENOV</h1>
                     <div className="text-sm">{currentDate}</div>
                 </div>
             </header>
