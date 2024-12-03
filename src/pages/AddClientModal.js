@@ -1,7 +1,65 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { UserPlus } from 'lucide-react';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
-const AddClientModal = ({ onClose }) => {
+const AddClientModal = ({ onClose, onClientAdded }) => {
+  const [clientData, setClientData] = useState({
+    nom: '',
+    prenom: '',
+    telephone: '',
+    email: ''
+  });
+  const showToast = (message, type = "success") => {
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: type,
+      title: message,
+      showConfirmButton: false,
+      timer: 4000,
+      timerProgressBar: true,
+    });
+  };
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setClientData(prevState => ({
+      ...prevState,
+      [id]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post('http://localhost:8000/api/clients/store', clientData);
+
+      showToast('Le client a été ajouté avec succès!', 'success');
+
+      // Réinitialiser le formulaire
+      setClientData({
+        nom: '',
+        prenom: '',
+        telephone: '',
+        email: ''
+      });
+
+      // Appeler le callback pour mettre à jour la liste des clients
+      if (onClientAdded) {
+        onClientAdded(response.data);
+      }
+
+      // Fermer la modal
+      onClose();
+
+    } catch (error) {
+      showToast("Une erreur est survenue lors de l'ajout du client");
+
+      console.error('Erreur:', error);
+    }
+  };
 
   return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -16,46 +74,58 @@ const AddClientModal = ({ onClose }) => {
             </button>
           </div>
 
-          <form className="p-6 space-y-4">
+          <form onSubmit={handleSubmit} className="p-6 space-y-4">
             <div>
-              <label htmlFor="clientFirstName" className="block text-sm font-medium text-gray-700 mb-1">
-                Prénom du Client
-              </label>
-              <input
-                  type="text"
-                  id="clientFirstName"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label htmlFor="clientLastName" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="nom" className="block text-sm font-medium text-gray-700 mb-1">
                 Nom du Client
               </label>
               <input
                   type="text"
-                  id="clientLastName"
+                  id="nom"
+                  value={clientData.nom}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label htmlFor="prenom" className="block text-sm font-medium text-gray-700 mb-1">
+                Prénom du Client
+              </label>
+              <input
+                  type="text"
+                  id="prenom"
+                  value={clientData.prenom}
+                  onChange={handleInputChange}
+                  required
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             <div>
-              <label htmlFor="clientEmail" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                 Adresse Email
               </label>
               <input
                   type="email"
-                  id="clientEmail"
+                  id="email"
+                  value={clientData.email}
+                  onChange={handleInputChange}
+                  required
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             <div>
-              <label htmlFor="clientPhone" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="telephone" className="block text-sm font-medium text-gray-700 mb-1">
                 Téléphone
               </label>
               <input
                   type="text"
-                  id="clientPhone"
+                  id="telephone"
+                  value={clientData.telephone}
+                  onChange={handleInputChange}
+                  required
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -63,6 +133,7 @@ const AddClientModal = ({ onClose }) => {
             <div className="flex justify-end space-x-4 pt-4">
               <button
                   type="reset"
+                  onClick={onClose}
                   className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition-colors"
               >
                 Annuler
@@ -73,9 +144,7 @@ const AddClientModal = ({ onClose }) => {
               >
                 Enregistrer
               </button>
-
             </div>
-
           </form>
         </div>
       </div>

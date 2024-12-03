@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import {
   LayoutDashboard,
   Home,
@@ -16,6 +17,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Calendar from "react-calendar";
 import AddProjectModal from "./AddProjectModal";
+import EditProjectModal from './EditProjectModal';
 
 
 const MenuItem = ({ icon: Icon, label, to }) => (
@@ -30,24 +32,86 @@ const MenuItem = ({ icon: Icon, label, to }) => (
 
 const ListProject = () => {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [date, setDate] = useState(new Date());
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
+
+
+  // Appeler fetchProjects lors du montage du composant
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  const handleProjectAdded = () => {
+    // Recharger la liste des clients
+    fetchProjects();
+  };
+
+  const fetchProjects = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/api/projets', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}` // Si nécessaire
+        }
+      });
+      setProjects(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to fetch projects');
+      setLoading(false);
+    }
+  };
+
+  // Fonction pour ouvrir la modal de modification
+  const handleEditProject = (project) => {
+    setSelectedProject(project);
+    setIsEditModalOpen(true);
+  };
+
+  // Fonction pour mettre à jour le projet dans la liste
+  const handleProjectUpdated = (updatedProject) => {
+    // Mettre à jour la liste des projets avec le projet modifié
+    setProjects(currentProjects =>
+        currentProjects.map(project =>
+            project.id === updatedProject.id ? updatedProject : project
+        )
+    );
+    fetchProjects();
+  };
+
+
 
   const handleOpenModal = () => {
     setModalOpen(true);
   };
 
+
   const handleCloseModal = () => {
     setModalOpen(false);
   };
 
-  const [date, setDate] = useState(new Date());
 
-  const projects = [
-    { numero: 12, libelle: 'IaaS/PaaS/7', dateService: '9 sept. 2014', delai: '16 sept. 2014', client: 'UYREE', etat: 'En Cours' },
-    { numero: 34, libelle: 'APPLICATION', dateService: '11 août 2014', delai: '20 août 2014', client: 'UYREE', etat: 'En Cours' },
-    { numero: 42, libelle: 'DDDDDD', dateService: '17 août 2014', delai: '14 août 2014', client: 'SONASD', etat: 'En Cours' },
-    { numero: 54, libelle: 'APPLICATION', dateService: '1 août 2014', delai: '15 août 2014', client: 'SONASD', etat: 'En Attente' },
-    { numero: 141, libelle: 'AUTOROUTE rebre-casa', dateService: '13 août 2014', delai: '13 nov. 2014', client: 'UYREE', etat: 'En Cours' },
-  ];
+  // Render loading state
+  if (loading) {
+    return (
+        <div className="flex justify-center items-center min-h-screen">
+          <div className="spinner">Loading...</div>
+        </div>
+    );
+  }
+
+  // Render error state
+  if (error) {
+    return (
+        <div className="flex justify-center items-center min-h-screen text-red-500">
+          {error}
+        </div>
+    );
+  }
 
   return (
       <div className="flex flex-col min-h-screen">
@@ -62,7 +126,7 @@ const ListProject = () => {
               <MenuItem icon={Briefcase} label="Projet" to="/ListProject"/>
               <MenuItem icon={Users} label="Employés" to="/EmployeeList"/>
               <MenuItem icon={Award} label="Department" to="/Department"/>
-              <MenuItem icon={LayoutDashboard} label="Dashboard" to="/Dashboard"/>
+              <MenuItem icon={LayoutDashboard} label="Dashboard" to="/DashboardComponent"/>
               <MenuItem icon={UserCheck} label="Clients" to="/ClientList"/>
               <MenuItem icon={Truck} label="Fournisseurs" to="/fournisseurs"/>
             </div>
@@ -81,7 +145,7 @@ const ListProject = () => {
             <div className="bg-white rounded-lg shadow-md">
               {/* Header */}
               <div className="p-4 flex justify-between items-center border-b">
-              <div className="flex items-center">
+                <div className="flex items-center">
                   <span className="mr-2">Afficher</span>
                   <select className="border rounded px-2 py-1">
                     <option>10</option>
@@ -100,13 +164,22 @@ const ListProject = () => {
                     <button
                         className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition-colors"
                         onClick={handleOpenModal}
-                      >
+                    >
                       Ajouter
                     </button>
 
-                    {/* Appel du modal */}
-                    <AddProjectModal isOpen={isModalOpen} onClose={handleCloseModal} />
+                    {/*/!* Appel du modal *!/*/}
+                    {/*<AddProjectModal isOpen={isModalOpen}*/}
+                    {/*                 onClose={handleCloseModal}*/}
+
+                    {/*/>*/}
                   </div>
+                  {isModalOpen && (
+                      <AddProjectModal isOpen={isModalOpen}
+                          onClose={handleCloseModal}
+                          onProjectAdded={handleProjectAdded}
+                      />
+                  )}
 
                 </div>
               </div>
@@ -127,30 +200,49 @@ const ListProject = () => {
                 </thead>
                 <tbody>
                 {projects.map((project) => (
-                    <tr key={project.numero} className="border-b hover:bg-gray-50">
-                      <td className="px-4 py-2">{project.numero}</td>
+                    <tr key={project.id} className="border-b hover:bg-gray-50">
+                      <td className="px-4 py-2">{project.id}</td>
                       <td className="px-4 py-2">{project.libelle}</td>
-                      <td className="px-4 py-2">{project.dateService}</td>
+                      <td className="px-4 py-2">{project.date_debut}</td>
                       <td className="px-4 py-2">{project.delai}</td>
-                      <td className="px-4 py-2">{project.client}</td>
+                      <td className="px-4 py-2">
+                        {project.client ? `${project.client.nom} ${project.client.prenom}` : 'Aucun client'}
+                      </td>
+
                       <td className="px-4 py-2">
                         <span
-                          className={`px-2 py-1 rounded-full text-xs ${project.etat === 'En Cours' ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800'}`}
+                            className={`px-2 py-1 rounded-full text-xs ${project.statut === 'en cours' ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800'}`}
                         >
-                        {project.etat}
+                        {project.statut}
                         </span>
                       </td>
-                      <td className="px-4 py-2">-</td>
+                      <td
+                          className="px-4 py-2">
+                        {project.date_fin ?  `${project.date_fin}` : '-'}
+                      </td>
                       <td className="px-4 py-2">
                         <button className="text-green-500 hover:text-green-700 mr-2">
                           <Plus className="h-4 w-4"/>
                         </button>
-                        <button className="text-gray-500 hover:text-gray-700">
+                        <button
+                            onClick={() => handleEditProject(project)}
+                            className="text-gray-500 hover:text-gray-700"
+                        >
                           <Edit className="h-4 w-4"/>
                         </button>
-                      </td>
-                    </tr>
-                ))}
+
+
+                      {/* Composant modal de modification */}
+                      <EditProjectModal
+                          isOpen={isEditModalOpen}
+                          onClose={() => setIsEditModalOpen(false)}
+                          project={selectedProject}
+                          onProjectUpdated={handleProjectUpdated}
+                      />
+
+                  </td>
+                  </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

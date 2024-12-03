@@ -3,7 +3,7 @@ import axios from 'axios';
 import { X } from "lucide-react";
 import Swal from "sweetalert2";
 
-const AddProjectModal = ({ isOpen, onClose, onProjectAdded }) => {
+const EditProjectModal = ({ isOpen, onClose, project, onProjectUpdated }) => {
     // State for form data
     const [formData, setFormData] = useState({
         statut: 'en cours',
@@ -11,8 +11,14 @@ const AddProjectModal = ({ isOpen, onClose, onProjectAdded }) => {
         description: '',
         client_id: '',
         user_id: '',
+        delai: '',
     });
 
+    // State for dropdown options
+    const [clients, setClients] = useState([]);
+    const [users, setUsers] = useState([]);
+
+    // Utility function for toast notifications
     const showToast = (message, type = "success") => {
         Swal.fire({
             toast: true,
@@ -25,45 +31,43 @@ const AddProjectModal = ({ isOpen, onClose, onProjectAdded }) => {
         });
     };
 
-    // State for dropdown options
-    const [clients, setClients] = useState([]);
-    const [users, setUsers] = useState([]);
+    // Populate form data when project prop changes
+    useEffect(() => {
+        if (project) {
+            setFormData({
+                statut: project.statut || 'en cours',
+                libelle: project.libelle || '',
+                description: project.description || '',
+                client_id: project.client_id || '',
+                user_id: project.user_id || '',
+                delai: project.delai || '',
+            });
+        }
+    }, [project]);
 
     // Fetch clients and users on component mount
     useEffect(() => {
         const fetchInitialData = async () => {
-            console.log('Fetching initial data...');
-
             try {
                 const [clientResponse, userResponse] = await Promise.all([
                     axios.get('http://127.0.0.1:8000/api/clients', {
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${localStorage.getItem('token')}` // Si nécessaire
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
                         }
                     }),
-                    axios.get('http://127.0.0.1:8000/api/users', {
-                        // headers: {
-                        //     'Content-Type': 'application/json',
-                        //     'Authorization': `Bearer ${localStorage.getItem('token')}` // Si nécessaire
-                        // }
-                    })
+                    axios.get('http://127.0.0.1:8000/api/users')
                 ]);
 
-                // Vérifiez si userResponse.data et clientResponse.data sont des tableaux avant de les définir
                 setClients(Array.isArray(clientResponse.data) ? clientResponse.data : []);
-                // Gestion des utilisateurs
-                const users = userResponse.data?.data?.data || []; // Double 'data' pour la pagination
-                console.log("Liste des utilisateurs :", users);
+                const users = userResponse.data?.data?.data || [];
                 setUsers(users);
 
             } catch (error) {
                 console.error('Error fetching initial data:', error);
+                showToast('Erreur lors du chargement des données', 'error');
             }
         };
-
-
-
 
         if (isOpen) {
             fetchInitialData();
@@ -84,41 +88,29 @@ const AddProjectModal = ({ isOpen, onClose, onProjectAdded }) => {
         e.preventDefault();
 
         try {
-            const response = await axios.post(
-                'http://127.0.0.1:8000/api/projets/store',
+            const response = await axios.put(
+                `http://127.0.0.1:8000/api/projets/update/${project.id}`,
                 {
                     statut: formData.statut,
                     libelle: formData.libelle,
                     description: formData.description,
-                    date_debut: formData.date_debut || null,
-                    date_fin: formData.date_fin || null,
                     delai: formData.delai,
                     client_id: formData.client_id,
+                    user_id: formData.user_id,
                 },
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}` // Si utilisé
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
                 }
             );
 
-            showToast('Projet ajouté avec succès !', 'success');
+            showToast('Projet mis à jour avec succès !', 'success');
 
-            // Reset form
-            setFormData({
-                statut: 'en cours',
-                libelle: '',
-                description: '',
-                date_debut: '',
-                date_fin: '',
-                delai: '',
-                client_id: '',
-            });
-
-            // Appeler le callback pour mettre à jour la liste des clients
-            if (onProjectAdded) {
-                onProjectAdded(response.data);
+            // Call callback to update project list
+            if (onProjectUpdated) {
+                onProjectUpdated(response.data);
             }
 
             onClose();
@@ -126,13 +118,11 @@ const AddProjectModal = ({ isOpen, onClose, onProjectAdded }) => {
             if (error.response && error.response.data.errors) {
                 showToast(`Erreur : ${Object.values(error.response.data.errors).join(', ')}`, 'error');
             } else {
-                showToast('Erreur lors de l’ajout du projet. Veuillez réessayer.', 'error');
+                showToast('Erreur lors de la mise à jour du projet. Veuillez réessayer.', 'error');
             }
-            console.error('Error adding project:', error);
+            console.error('Error updating project:', error);
         }
     };
-
-
 
     if (!isOpen) return null;
 
@@ -140,7 +130,7 @@ const AddProjectModal = ({ isOpen, onClose, onProjectAdded }) => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
             <div className="bg-white p-6 rounded-lg w-96">
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl font-bold">Ajout d'un nouveau Projet</h2>
+                    <h2 className="text-xl font-bold">Modification du Projet</h2>
                     <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
                         <X />
                     </button>
@@ -179,13 +169,23 @@ const AddProjectModal = ({ isOpen, onClose, onProjectAdded }) => {
                             label: `${user.prenom} ${user.nom}`
                         }))}
                     />
-                    {/* Nouveau champ pour le délai */}
                     <InputField
                         label="Délai"
                         name="delai"
                         type="date"
                         value={formData.delai}
                         onChange={handleChange}
+                    />
+                    <SelectField
+                        label="Statut"
+                        name="statut"
+                        value={formData.statut}
+                        onChange={handleChange}
+                        options={[
+                            { value: 'en cours', label: 'En Cours' },
+                            { value: 'terminé', label: 'Terminé' },
+                            { value: 'en attente', label: 'En Attente' }
+                        ]}
                     />
                     <div className="flex justify-end space-x-2 mt-4">
                         <button
@@ -199,14 +199,13 @@ const AddProjectModal = ({ isOpen, onClose, onProjectAdded }) => {
                             type="submit"
                             className="px-4 py-2 bg-blue-500 text-white rounded"
                         >
-                            Enregistrer
+                            Mettre à jour
                         </button>
                     </div>
                 </form>
             </div>
         </div>
     );
-
 };
 
 // Reusable Input Field Component
@@ -256,4 +255,4 @@ const SelectField = ({ label, name, value, onChange, options }) => (
     </div>
 );
 
-export default AddProjectModal;
+export default EditProjectModal;

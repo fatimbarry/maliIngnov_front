@@ -75,6 +75,7 @@ const EmployeeList = () => {
         }
     };
 
+
     const showToast = (message, type = "success") => {
         Swal.fire({
             toast: true,
@@ -113,6 +114,12 @@ const EmployeeList = () => {
             if (confirmResult.isConfirmed) {
                 const response = await fetch(`http://localhost:8000/api/users/delete/${id}`, {
                     method: 'DELETE',
+
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}` // Si nécessaire
+
+                    },
                 });
 
                 if (response.ok) {
@@ -145,6 +152,8 @@ const EmployeeList = () => {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}` // Si nécessaire
+
                     },
                     body: JSON.stringify(updatedData)
                 });
@@ -182,7 +191,7 @@ const EmployeeList = () => {
                         <MenuItem icon={Briefcase} label="Projet" to="/ListProject"/>
                         <MenuItem icon={Users} label="Employés" to="/EmployeeList"/>
                         <MenuItem icon={Award} label="Department" to="/Department"/>
-                        <MenuItem icon={LayoutDashboard} label="Dashboard" to="/Dashboard"/>
+                        <MenuItem icon={LayoutDashboard} label="Dashboard" to="/DashboardComponent"/>
                         <MenuItem icon={UserCheck} label="Clients" to="/ClientList"/>
                         <MenuItem icon={Truck} label="Fournisseurs" to="/fournisseurs"/>
                     </div>

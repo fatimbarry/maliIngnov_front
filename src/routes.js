@@ -15,6 +15,8 @@ import PointageList from './pages/PointageList';
 import EmployeeImputation from './pages/EmployeeImputation';
 import EmployeeInterface from './pages/EmployeeInterface';
 import MaliIngenovWorkInterface from './pages/MaliIngenovWorkInterface';
+import ProjectsList from './pages/ProjectsList';
+import ProjectDetails from './pages/ProjectDetails';
 
 function AppRoutes() {
     return (
@@ -25,10 +27,12 @@ function AppRoutes() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/MaliIngenovWorkInterface" element={<MaliIngenovWorkInterface />} />
                 <Route path="/EmployeeInterface" element={<EmployeeInterface />} />
+                <Route path="/ProjectsList" element={<ProjectsList />} />
                 <Route path="/employeeform" element={<EmployeeFormComponent/>} />
                 <Route path="/" element={<WelcomeComponent />} />
                 <Route path="/EmployeeList" element={<EmployeeList />} />
                 <Route path="/AddProjectForm" element={<AddProjectForm />} />
+                <Route path="/ProjectDetails" element={<ProjectDetails />} />
                 <Route path="/AddClientForm" element={<AddClientForm />} />
                 <Route path="/DashboardComponent" element={<DashboardComponent />} />
                 <Route path="/ListProject" element={<ListProject />} />

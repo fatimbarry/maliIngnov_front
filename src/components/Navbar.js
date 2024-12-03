@@ -1,7 +1,23 @@
 import React, { useState, useCallback } from 'react';
 import { Bell, Search, Menu, User, LogOut } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import {UserCircle } from 'lucide-react';
 
 const Navbar = ({ userName = "Fatoumata Boubacar Barry", email = "fatimbarry78130@gmail.com" }) => {
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        // Logique de déconnexion (déconnexion, suppression du token, etc.)
+        localStorage.removeItem('token'); // Exemple de suppression du token
+        // Redirection vers la page d'accueil
+        navigate('/');
+    };
+
+    const handleProfileClick = () => {
+        // Redirection vers la page de profil
+        navigate('/MaliIngenovWorkInterface');
+        setIsOpen(false); // Fermer le dropdown après la navigation
+    };
     const [isOpen, setIsOpen] = useState(false);
 
     // Utilisation de useCallback pour mémoriser la fonction
@@ -19,11 +35,11 @@ const Navbar = ({ userName = "Fatoumata Boubacar Barry", email = "fatimbarry7813
         };
     }, [handleClickOutside]);
 
-    const handleLogout = () => {
-        // Logique de déconnexion
-        console.log('Déconnexion');
-        setIsOpen(false);
-    };
+    // const handleLogout = () => {
+    //     // Logique de déconnexion
+    //     console.log('Déconnexion');
+    //     setIsOpen(false);
+    // };
 
     return (
         <nav className="flex items-center justify-between px-4 py-2 bg-white shadow-md">
@@ -95,6 +111,16 @@ const Navbar = ({ userName = "Fatoumata Boubacar Barry", email = "fatimbarry7813
                                 <div className="text-sm text-gray-500">{email}</div>
                             </div>
                             <div className="h-px bg-gray-100 my-1"/>
+
+                            {/* Nouveau bouton Voir Profil */}
+                            <button
+                                onClick={handleProfileClick}
+                                className="w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-50 flex items-center space-x-2 transition-colors duration-200"
+                            >
+                                <UserCircle className="w-4 h-4"/>
+                                <span>Voir Profil</span>
+                            </button>
+
                             <button
                                 onClick={handleLogout}
                                 className="w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-50 flex items-center space-x-2 transition-colors duration-200"
@@ -104,6 +130,7 @@ const Navbar = ({ userName = "Fatoumata Boubacar Barry", email = "fatimbarry7813
                             </button>
                         </div>
                     )}
+
                 </div>
             </div>
         </nav>

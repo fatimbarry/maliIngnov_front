@@ -3,6 +3,7 @@ import {FileText, Calendar, Hand, Briefcase, User} from 'lucide-react';
 import Footer from '../components/Footer';
 import axios from 'axios';
 import Swal from "sweetalert2";
+import { useNavigate } from 'react-router-dom';
 
 const EmployeeInterface = () => {
     // État pour le statut, le chargement, et les erreurs
@@ -10,6 +11,12 @@ const EmployeeInterface = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [email, setEmail] = useState('');
+    const navigate = useNavigate();
+    const handleTileClick = (route?: string) => {
+        if (route) {
+            navigate(route);
+        }
+    };
 
     const showToast = (message, type = "success") => {
         Swal.fire({
@@ -130,7 +137,7 @@ const EmployeeInterface = () => {
 
             console.log('Response:', response.data); // Affiche la réponse pour débogage
             setStatus(response.data.status);
-            showToast(`Statut mis à jour : ${status === 'present' ? 'Présent' : 'Absent'}`);
+            showToast(`Statut mis à jour : ${status === 'present' ? 'Absent' : 'Présent'}`);
 
         } catch (error) {
             console.error('Error:', error.response?.data || error.message);
@@ -145,8 +152,22 @@ const EmployeeInterface = () => {
 
 
     const tiles = [
-        { id: 1, title: 'Consultation', icon: FileText, color: 'bg-yellow-500', size: 'col-span-1' },
-        { id: 2, title: 'Imputation', icon: Calendar, color: 'bg-blue-500', size: 'col-span-1' },
+        {
+            id: 1,
+            title: 'Consultation',
+            icon: FileText,
+            color: 'bg-yellow-500',
+            size: 'col-span-1',
+            route: '/MaliIngenovWorkInterface' // Ajout de la route pour Consultation
+        },
+        {
+            id: 2,
+            title: 'Imputation',
+            icon: Calendar,
+            color: 'bg-blue-500',
+            size: 'col-span-1',
+            route: '/imputation' // Ajoutez une route si nécessaire
+        },
         {
             id: 3,
             title: 'Pointage',
@@ -154,7 +175,14 @@ const EmployeeInterface = () => {
             color: status === 'present' ? 'bg-green-500' : 'bg-red-500',
             size: 'col-span-1',
         },
-        { id: 4, title: 'Projets', icon: Briefcase, color: 'bg-gray-700', size: 'col-span-1' },
+        {
+            id: 4,
+            title: 'Projets',
+            icon: Briefcase,
+            color: 'bg-gray-700',
+            size: 'col-span-1',
+            route: '/ListProject' // Ajoutez une route si nécessaire
+        },
     ];
 
     return (
@@ -198,12 +226,14 @@ const EmployeeInterface = () => {
                                     >
                                         <tile.icon className="w-16 h-16 mb-4"/>
                                         <span className="text-xl font-semibold">
-                                {loading ? 'Chargement...' : `Pointage (${status})`}
-                            </span>
+                                        {loading ? 'Chargement...' : `Pointage (${status})`}
+                                    </span>
                                     </button>
                                 ) : (
                                     <button
-                                        className="w-full h-full flex flex-col items-center justify-center text-white p-6">
+                                        className="w-full h-full flex flex-col items-center justify-center text-white p-6"
+                                        onClick={() => handleTileClick(tile.route)}
+                                    >
                                         <tile.icon className="w-16 h-16 mb-4"/>
                                         <span className="text-xl font-semibold">{tile.title}</span>
                                     </button>
