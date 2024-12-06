@@ -16,7 +16,46 @@ const ProjectsList = () => {
             category: 'Dev',
             createdAt: '2023-05-01'
         },
-        // Autres projets...
+        {
+            id: 2,
+            imageUrl: '/project1.jpg',
+            title: 'Easy Appointments',
+            description: 'L\'objectif principal est de permettre la gestion centralisée et automatisée des rendez-vous entre les clients et les différents services de l\'entreprise',
+            authorName: 'Diabakhate',
+            authorAvatar: '/moussou.jpg',
+            category: 'Dev',
+            createdAt: '2023-05-01'
+        },
+        {
+            id: 3,
+            imageUrl: '/project2.png',
+            title: 'Tayeur Gestion',
+            description: 'Creer un site pour afficher la liste des produits des ateliers',
+            authorName: 'Diame',
+            authorAvatar: '/diarry.jpg',
+            category: 'Dev',
+            createdAt: '2023-05-01'
+        },
+        {
+            id: 4,
+            imageUrl: '/project5.png',
+            title: 'Easy Event',
+            description: 'L\'objectif principal de cette application est de centraliser et d\'automatiser la gestion des événements',
+            authorName: 'Diame',
+            authorAvatar: '/diarry.jpg',
+            category: 'Dev',
+            createdAt: '2023-05-01'
+        },
+        {
+            id: 5,
+            imageUrl: '/project4.png',
+            title: 'Easy Portfolio',
+            description: 'L’objectif principal du projet Easy Portfolio est de fournir une solution centralisée et automatisée permettant aux utilisateurs de créer, personnaliser et gérer leurs portfolios en ligne de manière simple et efficace.',
+            authorName: 'Lom',
+            authorAvatar: '/fatima.jpg',
+            category: 'Dev',
+            createdAt: '2023-05-01'
+        },
     ];
 
     const handleProjectClick = (project) => {

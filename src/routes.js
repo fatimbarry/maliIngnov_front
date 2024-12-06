@@ -17,6 +17,7 @@ import EmployeeInterface from './pages/EmployeeInterface';
 import MaliIngenovWorkInterface from './pages/MaliIngenovWorkInterface';
 import ProjectsList from './pages/ProjectsList';
 import ProjectDetails from './pages/ProjectDetails';
+import TacheList from './pages/TacheList';
 
 function AppRoutes() {
     return (
@@ -28,11 +29,12 @@ function AppRoutes() {
                 <Route path="/MaliIngenovWorkInterface" element={<MaliIngenovWorkInterface />} />
                 <Route path="/EmployeeInterface" element={<EmployeeInterface />} />
                 <Route path="/ProjectsList" element={<ProjectsList />} />
+                <Route path="/TacheList" element={<TacheList />} />
                 <Route path="/employeeform" element={<EmployeeFormComponent/>} />
                 <Route path="/" element={<WelcomeComponent />} />
                 <Route path="/EmployeeList" element={<EmployeeList />} />
                 <Route path="/AddProjectForm" element={<AddProjectForm />} />
-                <Route path="/ProjectDetails" element={<ProjectDetails />} />
+                <Route path="/projects/:id" element={<ProjectDetails />} />
                 <Route path="/AddClientForm" element={<AddClientForm />} />
                 <Route path="/DashboardComponent" element={<DashboardComponent />} />
                 <Route path="/ListProject" element={<ListProject />} />

@@ -181,7 +181,7 @@ const EmployeeInterface = () => {
             icon: Briefcase,
             color: 'bg-gray-700',
             size: 'col-span-1',
-            route: '/ListProject' // Ajoutez une route si nécessaire
+            route: '/ProjectsList' // Ajoutez une route si nécessaire
         },
     ];
 

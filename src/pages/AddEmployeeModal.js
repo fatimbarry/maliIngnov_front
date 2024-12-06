@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import axios from 'axios';
 import Swal from "sweetalert2";
+import dayjs from 'dayjs';
 
 const AddEmployeeModal = ({ onClose, onEmployeeAdded }) => {
     const [formData, setFormData] = useState({
@@ -131,21 +132,23 @@ const AddEmployeeModal = ({ onClose, onEmployeeAdded }) => {
 
         try {
             const formDataToSend = new FormData();
+            const formattedDate = dayjs(formData.date_Emb, 'DD/MM/YYYY').format('YYYY-MM-DD');
             formDataToSend.append('sexe', formData.sexe);
             formDataToSend.append('prenom', formData.prenom);
             formDataToSend.append('nom', formData.nom);
-            formDataToSend.append('date_Emb', formData.date_Emb);
+            formDataToSend.append('date_Emb', formattedDate);
             formDataToSend.append('email', formData.email);
             formDataToSend.append('role', formData.role);
             formDataToSend.append('post', formData.post);
             formDataToSend.append('department_id', formData.department_id);
+            console.log('sexe:', formData.sexe);
 
             // Gestion de la photo si elle existe
             if (formData.photo) {
                 formDataToSend.append('photo', formData.photo);
             }
 
-            const response = await axios.post('http://127.0.0.1:8000/users/store', formDataToSend, {
+            const response = await axios.post('http://127.0.0.1:8000/api/users/store', formDataToSend, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -243,8 +246,8 @@ const AddEmployeeModal = ({ onClose, onEmployeeAdded }) => {
                                                     type="radio"
                                                     className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                                                     name="sexe"
-                                                    value="male"
-                                                    checked={formData.sexe === 'male'}
+                                                    value="Homme"
+                                                    checked={formData.sexe === 'Homme'}
                                                     onChange={handleInputChange}
                                                 />
                                                 <span className="ml-2 text-gray-700">Homme</span>
@@ -254,8 +257,8 @@ const AddEmployeeModal = ({ onClose, onEmployeeAdded }) => {
                                                     type="radio"
                                                     className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                                                     name="sexe"
-                                                    value="female"
-                                                    checked={formData.sexe === 'female'}
+                                                    value="Femme"
+                                                    checked={formData.sexe === 'Femme'}
                                                     onChange={handleInputChange}
                                                 />
                                                 <span className="ml-2 text-gray-700">Femme</span>
