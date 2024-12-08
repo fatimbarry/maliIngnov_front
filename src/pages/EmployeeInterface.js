@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {FileText, Calendar, Hand, Briefcase, User} from 'lucide-react';
+import {UserCircle, Calendar, Hand, Briefcase, User} from 'lucide-react';
 import Footer from '../components/Footer';
 import axios from 'axios';
 import Swal from "sweetalert2";
@@ -149,13 +149,11 @@ const EmployeeInterface = () => {
     };
 
 
-
-
     const tiles = [
         {
             id: 1,
-            title: 'Consultation',
-            icon: FileText,
+            title: 'Profile',
+            icon: UserCircle,
             color: 'bg-yellow-500',
             size: 'col-span-1',
             route: '/MaliIngenovWorkInterface' // Ajout de la route pour Consultation
@@ -166,7 +164,7 @@ const EmployeeInterface = () => {
             icon: Calendar,
             color: 'bg-blue-500',
             size: 'col-span-1',
-            route: '/imputation' // Ajoutez une route si nécessaire
+            route: '/EmployeeImputation' // Ajoutez une route si nécessaire
         },
         {
             id: 3,

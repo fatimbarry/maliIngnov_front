@@ -18,6 +18,8 @@ import MaliIngenovWorkInterface from './pages/MaliIngenovWorkInterface';
 import ProjectsList from './pages/ProjectsList';
 import ProjectDetails from './pages/ProjectDetails';
 import TacheList from './pages/TacheList';
+import ChefInterface from './pages/ChefInterface';
+import ChefProject from './pages/ChefProject';
 
 function AppRoutes() {
     return (
@@ -26,6 +28,8 @@ function AppRoutes() {
             
 
                 <Route path="/login" element={<Login />} />
+                <Route path="/ChefProject" element={<ChefProject />} />
+                <Route path="/ChefInterface" element={<ChefInterface />} />
                 <Route path="/MaliIngenovWorkInterface" element={<MaliIngenovWorkInterface />} />
                 <Route path="/EmployeeInterface" element={<EmployeeInterface />} />
                 <Route path="/ProjectsList" element={<ProjectsList />} />

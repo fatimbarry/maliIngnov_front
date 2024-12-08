@@ -84,7 +84,7 @@ const LoginComponent = () => {
                         navigate('/comptable-dashboard');
                         break;
                     case 'Chef_de_projet':
-                        navigate('/chef-projet-dashboard');
+                        navigate('/ChefInterface');
                         break;
                     case 'Employé':
                         navigate('/EmployeeInterface');

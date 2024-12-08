@@ -1,6 +1,8 @@
 import React from 'react';
 import { Home, Eye, Edit, Star, Clock, ChevronDown, Search, User, LogOut } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const PointageList = () => {
   const pointages = [
@@ -9,34 +11,36 @@ const PointageList = () => {
   ];
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
-      <aside className="w-64 bg-gray-900 text-white">
-        <div className="p-4">
-          <h2 className="text-2xl font-bold mb-4">MALI INGÉNOV</h2>
-          <nav>
-            <Link to="#" className="flex items-center py-2 px-4 bg-blue-600 rounded"><Home className="mr-2" size={18} /> Accueil</Link>
-            <Link to="#" className="flex items-center py-2 px-4"><Eye className="mr-2" size={18} /> Consultation</Link>
-            <Link to="#" className="flex items-center py-2 px-4"><Edit className="mr-2" size={18} /> Imputation</Link>
-            <Link to="#" className="flex items-center py-2 px-4"><Star className="mr-2" size={18} /> Heures supplémentaires</Link>
-          </nav>
-        </div>
-      </aside>
+      <div className="min-h-screen bg-gray-50">
+        <Navbar className="h-16"/>
+        {/* Sidebar */}
+        <div className="flex">
+          <aside className="w-64 bg-gray-900 text-white h-[calc(100vh-4rem)] fixed top-14 left-0">
+            <div className="p-4">
+              <h2 className="text-2xl font-bold mb-4">MALI INGÉNOV</h2>
+              <nav>
+                <Link to="/EmployeeInterface" className="flex items-center py-2 px-4 bg-blue-600 rounded"><Home className="mr-2" size={18} /> Accueil</Link>
+                <Link to="#" className="flex items-center py-2 px-4"><Eye className="mr-2" size={18} /> Pointage</Link>
+                <Link to="/EmployeeImputation" className="flex items-center py-2 px-4"><Edit className="mr-2" size={18} /> Imputation</Link>
+                <Link to="#" className="flex items-center py-2 px-4"><Star className="mr-2" size={18} /> Heures supplémentaires</Link>
+              </nav>
+            </div>
+          </aside>
 
-      {/* Main content */}
-      <main className="flex-1 p-8">
-        <header className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold">Liste des Pointages</h1>
-          <div className="flex items-center">
-            <Clock className="mr-2" size={18} />
-            <span>Plages Définies à valider</span>
-            <User className="ml-4 mr-2" size={18} />
-            <span>Profil: Chargeur Mos de passe</span>
-            <LogOut className="ml-4" size={18} />
-          </div>
-        </header>
+          {/* Main content */}
+          <main className="flex-1 ml-64 p-8">
+            <header className="flex justify-between items-center mb-8">
+              <h1 className="text-2xl font-bold">Liste des Pointages</h1>
+              <div className="flex items-center">
+                <Clock className="mr-2" size={18} />
+                <span>Plages Définies à valider</span>
+                <User className="ml-4 mr-2" size={18} />
+                <span>Profil: User</span>
+                <LogOut className="ml-4" size={18} />
+              </div>
+            </header>
 
-        <div className="bg-white shadow rounded-lg">
+            <div className="bg-white shadow rounded-lg">
           <div className="p-4 border-b flex justify-between items-center">
             <div className="flex items-center">
               <span className="mr-2">Afficher:</span>
@@ -80,8 +84,11 @@ const PointageList = () => {
             <span className="ml-4">15:57:2</span>
           </div>
         </div>
-      </main>
-    </div>
+          </main>
+        </div>
+        <Footer />
+      </div>
+
   );
 };
 

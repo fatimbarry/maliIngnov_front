@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Bell, Search, MoreVertical } from 'lucide-react';
+//import { Bell, Search, MoreVertical } from 'lucide-react';
 import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Swal from "sweetalert2";
+import Navbar from "../components/Navbar";
 
 const MaliIngenovWorkInterface = () => {
     const [profileData, setProfileData] = useState({
@@ -147,34 +148,7 @@ const MaliIngenovWorkInterface = () => {
     return (
         <div className="min-h-screen bg-gray-50">
             {/* Top Navbar remains the same */}
-            <nav className="bg-white px-6 py-3 flex items-center justify-between border-b">
-                <div className="flex items-center gap-4 flex-1">
-                    <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-lg bg-orange-500 flex items-center justify-center">
-                            <span className="text-white font-semibold">M</span>
-                        </div>
-                        <span className="text-green-500 font-semibold">MaliIngenov Work</span>
-                    </div>
-                    <div className="flex-1 max-w-xl">
-                        <div className="relative">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-                            <input
-                                type="text"
-                                placeholder="Rechercher"
-                                className="w-full pl-10 pr-4 py-2 rounded-lg bg-gray-100 border-none focus:ring-2 focus:ring-green-500"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div className="flex items-center gap-4">
-                    <div className="relative">
-                        <Bell className="w-5 h-5 text-gray-600" />
-                        <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">1</span>
-                    </div>
-                    <MoreVertical className="w-5 h-5 text-gray-600" />
-                    <img src="/api/placeholder/32/32" alt="Profile" className="w-8 h-8 rounded-full" />
-                </div>
-            </nav>
+            <Navbar />
 
             <div className="flex">
                 {/* Sidebar */}
@@ -315,9 +289,9 @@ const MaliIngenovWorkInterface = () => {
             </div>
         </main>
 
-{/* Profile Section */
-}
-    <aside className="w-80 p-6">
+                {/* Profile Section */}
+
+                <aside className="w-80 p-6">
         <h2 className="text-xl font-semibold text-green-500 mb-6">Photo de profil</h2>
         <div className="flex flex-col items-center">
             <div className="w-40 h-40 rounded-full overflow-hidden bg-yellow-400">
