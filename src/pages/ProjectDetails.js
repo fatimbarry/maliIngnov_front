@@ -27,15 +27,7 @@ const ProjectDetails = () => {
         });
     };
 
-    const clientInfo = {
-        name: 'Mamadou Barry',
-        paymentMethod: 'Verified',
-        deadline: '30 septembre 2024'
-    };
 
-    const tasks = [
-        { name: 'faire un test', cost: '0.00 FCFA', status: 'Non défini' }
-    ];
 
     const projects = [
         {

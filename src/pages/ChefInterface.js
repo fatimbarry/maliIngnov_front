@@ -77,11 +77,11 @@ const ChefInterface = () => {
                                 </svg>
                             </div>
                         </Link>
-                        <Link to="/ProjectsList"
-                            className="bg-red-500 p-8 rounded-lg flex items-center justify-between hover:bg-red-600 transition-colors duration-300">
-                            <div className="text-white font-medium text-lg">Pièce débours</div>
+                        <Link to="/TacheList"
+                            className="bg-gray-500 p-8 rounded-lg flex items-center justify-between hover:bg-gray-600 transition-colors duration-300">
+                            <div className="text-white font-medium text-lg">Gestion Taches</div>
                             <div className="bg-white p-6 rounded-full">
-                                <svg className="w-6 h-6 text-red-500" fill="none" stroke="currentColor"
+                                <svg className="w-6 h-6 text-gray-500" fill="none" stroke="currentColor"
                                      viewBox="0 0 24 24"
                                      xmlns="http://www.w3.org/2000/svg">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
