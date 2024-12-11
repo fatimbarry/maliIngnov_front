@@ -63,7 +63,7 @@ const ChefProject = () => {
                         <nav className="space-y-2">
                             <Link to="/ChefInterface" className="flex items-center py-2 px-4 hover:bg-gray-800 rounded"><Home size={18}
                                                                                                                                   className="mr-2"/> Accueil</Link>
-                            <Link to="/PointageList" className="flex items-center py-2 px-4 hover:bg-gray-800 rounded"><Eye size={18}
+                            <Link to="/TacheList" className="flex items-center py-2 px-4 hover:bg-gray-800 rounded"><Eye size={18}
                                                                                                                             className="mr-2"/> Taches</Link>
                             <Link to="/ChefProject" className="flex items-center py-2 px-4 bg-blue-600 rounded"><Edit size={18}
                                                                                                            className="mr-2"/> Projets</Link>
