@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
     Box,
     CheckCircle,
-    Circle,
     Users,
     Home,
     Briefcase,
@@ -53,9 +52,11 @@ const DashboardComponent = () => {
                         <MenuItem icon={Home} label="Accueil" to="/"/>
                         <MenuItem icon={Briefcase} label="Projet" to="/ListProject"/>
                         <MenuItem icon={Users} label="Employés" to="/EmployeeList"/>
-                        <MenuItem icon={Award} label="Department" to="/Department"/>
-                        <MenuItem icon={LayoutDashboard} label="Dashboard" to="/Dashboard"/>
+                        <MenuItem icon={Award} label="Contrats" to="/ContractList"/>
+                        <MenuItem icon={LayoutDashboard} label="Dashboard" to="/DashboardComponent"/>
                         <MenuItem icon={UserCheck} label="Clients" to="/ClientList"/>
+                        <MenuItem icon={Users} label="Groupes" to="/Groupe"/>
+                        <MenuItem icon={Award} label="Departments" to="/Department"/>
                         <MenuItem icon={Truck} label="Fournisseurs" to="/fournisseurs"/>
                     </div>
                     <div className="mt-8 p-4">
@@ -70,7 +71,7 @@ const DashboardComponent = () => {
 
                 {/* Main Content */}
                 <main className="flex-1 p-8 bg-gray-50/50">
-                    <h1 className="text-2xl font-semibold text-blue-900 mb-8">Titre de la page</h1>
+                    <h1 className="text-2xl font-semibold text-blue-900 mb-8">Tableau de Bord</h1>
 
                     {/* Projects and Tasks Section */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -83,15 +84,15 @@ const DashboardComponent = () => {
                             </div>
                             <div className="grid grid-cols-4 gap-4">
                                 <div>
-                                    <div className="text-3xl font-bold text-blue-900">44</div>
+                                    <div className="text-3xl font-bold text-blue-900">5</div>
                                     <div className="text-gray-500 text-sm">Total</div>
                                 </div>
                                 <div>
-                                    <div className="text-3xl font-bold text-orange-500">16</div>
+                                    <div className="text-3xl font-bold text-orange-500">4</div>
                                     <div className="text-gray-500 text-sm">En cours</div>
                                 </div>
                                 <div>
-                                    <div className="text-3xl font-bold text-pink-500">18</div>
+                                    <div className="text-3xl font-bold text-pink-500">01</div>
                                     <div className="text-gray-500 text-sm">En pause</div>
                                 </div>
                                 <div>
@@ -134,8 +135,8 @@ const DashboardComponent = () => {
                         <Card className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <div className="text-3xl font-bold text-gray-700">42</div>
-                                    <div className="text-gray-500 text-sm">Total Bakelistes</div>
+                                    <div className="text-3xl font-bold text-gray-700">8</div>
+                                    <div className="text-gray-500 text-sm">Total Employés</div>
                                 </div>
                                 <div className="p-2 bg-pink-100 rounded-lg">
                                     <Users className="w-6 h-6 text-pink-500" />
@@ -146,8 +147,8 @@ const DashboardComponent = () => {
                         <Card className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <div className="text-3xl font-bold text-gray-700">12</div>
-                                    <div className="text-gray-500 text-sm">Bakelistes actifs</div>
+                                    <div className="text-3xl font-bold text-gray-700">08</div>
+                                    <div className="text-gray-500 text-sm">Employés actifs</div>
                                 </div>
                                 <div className="p-2 bg-blue-100 rounded-lg">
                                     <Users className="w-6 h-6 text-blue-500" />
@@ -158,8 +159,8 @@ const DashboardComponent = () => {
                         <Card className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <div className="text-3xl font-bold text-gray-700">25</div>
-                                    <div className="text-gray-500 text-sm">Bakelistes Payés</div>
+                                    <div className="text-3xl font-bold text-gray-700">08</div>
+                                    <div className="text-gray-500 text-sm">Employés Payés</div>
                                 </div>
                                 <div className="p-2 bg-emerald-100 rounded-lg">
                                     <Users className="w-6 h-6 text-emerald-500" />
@@ -170,8 +171,8 @@ const DashboardComponent = () => {
                         <Card className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <div className="text-3xl font-bold text-gray-700">13</div>
-                                    <div className="text-gray-500 text-sm">Bakelistes Retirés</div>
+                                    <div className="text-3xl font-bold text-gray-700">01</div>
+                                    <div className="text-gray-500 text-sm">Employés Retirés</div>
                                 </div>
                                 <div className="p-2 bg-red-100 rounded-lg">
                                     <Users className="w-6 h-6 text-red-500" />
@@ -189,7 +190,7 @@ const DashboardComponent = () => {
                                     <div className="text-gray-500 text-sm">Total Livraisons</div>
                                 </div>
                                 <div className="p-2 bg-purple-100 rounded-lg">
-                                    <Circle className="w-6 h-6 text-purple-500" />
+                                    <CheckCircle className="w-6 h-6 text-purple-500" />
                                 </div>
                             </div>
                         </Card>
@@ -201,7 +202,7 @@ const DashboardComponent = () => {
                                     <div className="text-gray-500 text-sm">Livraisons Validées</div>
                                 </div>
                                 <div className="p-2 bg-orange-100 rounded-lg">
-                                    <Circle className="w-6 h-6 text-orange-500" />
+                                    <CheckCircle className="w-6 h-6 text-orange-500" />
                                 </div>
                             </div>
                         </Card>
@@ -213,7 +214,7 @@ const DashboardComponent = () => {
                                     <div className="text-gray-500 text-sm">Livraisons Rejetées</div>
                                 </div>
                                 <div className="p-2 bg-blue-100 rounded-lg">
-                                    <Circle className="w-6 h-6 text-blue-500" />
+                                    <CheckCircle className="w-6 h-6 text-blue-500" />
                                 </div>
                             </div>
                         </Card>
@@ -221,11 +222,11 @@ const DashboardComponent = () => {
                         <Card className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <div className="text-3xl font-bold text-gray-700">14</div>
-                                    <div className="text-gray-500 text-sm">Livraisons Rejetées</div>
+                                    <div className="text-3xl font-bold text-gray-700">03</div>
+                                    <div className="text-gray-500 text-sm">Total Clients</div>
                                 </div>
                                 <div className="p-2 bg-blue-100 rounded-lg">
-                                    <Circle className="w-6 h-6 text-blue-500" />
+                                    <Users className="w-6 h-6 text-blue-500"/>
                                 </div>
                             </div>
                         </Card>
@@ -235,7 +236,7 @@ const DashboardComponent = () => {
             </div>
 
             {/* Footer */}
-            <Footer />
+            <Footer/>
         </div>
     );
 };

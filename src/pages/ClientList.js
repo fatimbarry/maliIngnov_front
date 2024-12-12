@@ -149,9 +149,11 @@ const ClientList = () => {
               <MenuItem icon={Home} label="Accueil" to="/"/>
               <MenuItem icon={Briefcase} label="Projet" to="/ListProject"/>
               <MenuItem icon={Users} label="Employés" to="/EmployeeList"/>
-              <MenuItem icon={Award} label="Department" to="/Department"/>
+              <MenuItem icon={Award} label="Contrats" to="/ContractList"/>
               <MenuItem icon={LayoutDashboard} label="Dashboard" to="/DashboardComponent"/>
               <MenuItem icon={UserCheck} label="Clients" to="/ClientList"/>
+              <MenuItem icon={Users} label="Groupes" to="/Groupe"/>
+              <MenuItem icon={Award} label="Departments" to="/Department"/>
               <MenuItem icon={Truck} label="Fournisseurs" to="/fournisseurs"/>
             </div>
             <div className="mt-8 p-4">
@@ -239,39 +241,39 @@ const ClientList = () => {
                         </button>
 
 
-                      {/* Update Modal */}
-                      {isUpdateModalOpen && (
-                          <UpdateClientModal
-                              client={selectedClient}
-                              onClose={() => setIsUpdateModalOpen(false)}
-                              onClientUpdated={handleClientUpdated}
-                          />
-                      )}
+                        {/* Update Modal */}
+                        {isUpdateModalOpen && (
+                            <UpdateClientModal
+                                client={selectedClient}
+                                onClose={() => setIsUpdateModalOpen(false)}
+                                onClientUpdated={handleClientUpdated}
+                            />
+                        )}
 
-                  <button className="text-red-600 hover:text-red-800"
-                  onClick={() => handleDeleteClient(client.id)}
-                >
-                <Trash2 className="h-5 w-5"/>
-                </button>
-              </td>
-            </tr>
-            ))}
-          </tbody>
-        </table>
+                        <button className="text-red-600 hover:text-red-800"
+                                onClick={() => handleDeleteClient(client.id)}
+                        >
+                          <Trash2 className="h-5 w-5"/>
+                        </button>
+                      </td>
+                    </tr>
+                ))}
+                </tbody>
+              </table>
 
-        <div className="px-4 py-3 bg-gray-50 border-t border-gray-200 sm:px-6 flex justify-between items-center">
-          <div className="text-sm text-gray-700">
-            Total des clients : {clients.length}
-          </div>
+              <div className="px-4 py-3 bg-gray-50 border-t border-gray-200 sm:px-6 flex justify-between items-center">
+                <div className="text-sm text-gray-700">
+                  Total des clients : {clients.length}
+                </div>
+              </div>
+            </div>
+          </main>
         </div>
-      </div>
-</main>
-</div>
 
-  <Footer/>
-</div>
-)
-  ;
+        <Footer/>
+      </div>
+  )
+      ;
 };
 
 export default ClientList;

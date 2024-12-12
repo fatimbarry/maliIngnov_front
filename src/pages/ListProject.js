@@ -18,6 +18,7 @@ import Footer from '../components/Footer';
 import Calendar from "react-calendar";
 import AddProjectModal from "./AddProjectModal";
 import EditProjectModal from './EditProjectModal';
+import ContractModal from "./ContractModal";
 
 
 const MenuItem = ({ icon: Icon, label, to }) => (
@@ -38,6 +39,17 @@ const ListProject = () => {
   const [date, setDate] = useState(new Date());
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
+
+
+  const [selectedProjetId, setSelectedProjetId] = useState(null);
+
+  const handleOpenModal2 = (id) => {
+    setSelectedProjetId(id);
+  };
+
+  const handleCloseModal2 = () => {
+    setSelectedProjetId(null);
+  };
 
 
   // Appeler fetchProjects lors du montage du composant
@@ -125,9 +137,11 @@ const ListProject = () => {
               <MenuItem icon={Home} label="Accueil" to="/"/>
               <MenuItem icon={Briefcase} label="Projet" to="/ListProject"/>
               <MenuItem icon={Users} label="Employés" to="/EmployeeList"/>
-              <MenuItem icon={Award} label="Department" to="/Department"/>
-              <MenuItem icon={LayoutDashboard} label="Dashboard" to="/DashboardComponent"/>
+              <MenuItem icon={Award} label="Contrats" to="/ContractList"/>
+              <MenuItem icon={LayoutDashboard} label="Dashboard" to="/Dashboard"/>
               <MenuItem icon={UserCheck} label="Clients" to="/ClientList"/>
+              <MenuItem icon={Users} label="Groupes" to="/Groupe"/>
+              <MenuItem icon={Award} label="Departments" to="/Department"/>
               <MenuItem icon={Truck} label="Fournisseurs" to="/fournisseurs"/>
             </div>
             <div className="mt-8 p-4">
@@ -168,16 +182,11 @@ const ListProject = () => {
                       Ajouter
                     </button>
 
-                    {/*/!* Appel du modal *!/*/}
-                    {/*<AddProjectModal isOpen={isModalOpen}*/}
-                    {/*                 onClose={handleCloseModal}*/}
-
-                    {/*/>*/}
                   </div>
                   {isModalOpen && (
                       <AddProjectModal isOpen={isModalOpen}
-                          onClose={handleCloseModal}
-                          onProjectAdded={handleProjectAdded}
+                                       onClose={handleCloseModal}
+                                       onProjectAdded={handleProjectAdded}
                       />
                   )}
 
@@ -218,12 +227,26 @@ const ListProject = () => {
                       </td>
                       <td
                           className="px-4 py-2">
-                        {project.date_fin ?  `${project.date_fin}` : '-'}
+                        {project.date_fin ? `${project.date_fin}` : '-'}
                       </td>
                       <td className="px-4 py-2">
-                        <button className="text-green-500 hover:text-green-700 mr-2">
+
+                        <button className="text-green-500 hover:text-green-700 mr-2"
+                                onClick={() => handleOpenModal2(project.id)}>
                           <Plus className="h-4 w-4"/>
                         </button>
+
+
+                        {/* Modal pour ajouter un contrat */}
+                        {selectedProjetId && (
+                            <ContractModal
+                                projetId={selectedProjetId}
+                                onContractAdded={() => {
+                                  handleCloseModal2();
+                                }}
+                            />
+                        )}
+
                         <button
                             onClick={() => handleEditProject(project)}
                             className="text-gray-500 hover:text-gray-700"
@@ -232,17 +255,17 @@ const ListProject = () => {
                         </button>
 
 
-                      {/* Composant modal de modification */}
-                      <EditProjectModal
-                          isOpen={isEditModalOpen}
-                          onClose={() => setIsEditModalOpen(false)}
-                          project={selectedProject}
-                          onProjectUpdated={handleProjectUpdated}
-                      />
+                        {/* Composant modal de modification */}
+                        <EditProjectModal
+                            isOpen={isEditModalOpen}
+                            onClose={() => setIsEditModalOpen(false)}
+                            project={selectedProject}
+                            onProjectUpdated={handleProjectUpdated}
+                        />
 
-                  </td>
-                  </tr>
-                  ))}
+                      </td>
+                    </tr>
+                ))}
                 </tbody>
               </table>
             </div>

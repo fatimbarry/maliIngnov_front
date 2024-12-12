@@ -55,7 +55,7 @@ const AddClientModal = ({ onClose, onClientAdded }) => {
       onClose();
 
     } catch (error) {
-      showToast("Une erreur est survenue lors de l'ajout du client");
+      showToast("Une erreur est survenue lors de l'ajout du client",'error');
 
       console.error('Erreur:', error);
     }

@@ -20,6 +20,7 @@ import ProjectDetails from './pages/ProjectDetails';
 import TacheList from './pages/TacheList';
 import ChefInterface from './pages/ChefInterface';
 import ChefProject from './pages/ChefProject';
+import ContractList from './pages/ContractList';
 
 function AppRoutes() {
     return (
@@ -28,6 +29,7 @@ function AppRoutes() {
             
 
                 <Route path="/login" element={<Login />} />
+                <Route path="/ContractList" element={<ContractList />} />
                 <Route path="/ChefProject" element={<ChefProject />} />
                 <Route path="/ChefInterface" element={<ChefInterface />} />
                 <Route path="/MaliIngenovWorkInterface" element={<MaliIngenovWorkInterface />} />

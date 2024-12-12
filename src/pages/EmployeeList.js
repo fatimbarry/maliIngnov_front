@@ -190,9 +190,11 @@ const EmployeeList = () => {
                         <MenuItem icon={Home} label="Accueil" to="/"/>
                         <MenuItem icon={Briefcase} label="Projet" to="/ListProject"/>
                         <MenuItem icon={Users} label="Employés" to="/EmployeeList"/>
-                        <MenuItem icon={Award} label="Department" to="/Department"/>
+                        <MenuItem icon={Award} label="Contrats" to="/ContractList"/>
                         <MenuItem icon={LayoutDashboard} label="Dashboard" to="/DashboardComponent"/>
                         <MenuItem icon={UserCheck} label="Clients" to="/ClientList"/>
+                        <MenuItem icon={Users} label="Groupes" to="/Groupe"/>
+                        <MenuItem icon={Award} label="Departments" to="/Department"/>
                         <MenuItem icon={Truck} label="Fournisseurs" to="/fournisseurs"/>
                     </div>
                     <div className="mt-8 p-4">
@@ -215,7 +217,7 @@ const EmployeeList = () => {
                     <div className="bg-gray-100 p-4 rounded-lg shadow-md">
                         <div className="flex justify-between items-center mb-4">
                             <div className="flex items-center">
-                                <Table className="w-5 h-5 mr-2" />
+                                <Table className="w-5 h-5 mr-2"/>
                                 <h2 className="text-lg font-semibold text-gray-800">
                                     Liste des employés
                                 </h2>
@@ -225,7 +227,7 @@ const EmployeeList = () => {
                                     className="flex items-center bg-blue-500 text-white px-3 py-1 rounded-full hover:bg-blue-600 transition-colors"
                                     onClick={handleOpenModal}
                                 >
-                                    <PlusCircle className="w-5 h-5 mr-2" />
+                                    <PlusCircle className="w-5 h-5 mr-2"/>
                                     Ajouter
                                 </button>
                             </div>
@@ -289,13 +291,13 @@ const EmployeeList = () => {
                                                     className="text-blue-500 hover:text-blue-700 mr-2"
                                                     onClick={() => handleModify(employee.id)}
                                                 >
-                                                    <Edit className="w-4 h-4" />
+                                                    <Edit className="w-4 h-4"/>
                                                 </button>
                                                 <button
                                                     className="text-red-500 hover:text-red-700"
                                                     onClick={() => handleDelete(employee.id)}
                                                 >
-                                                    <Trash2 className="w-4 h-4" />
+                                                    <Trash2 className="w-4 h-4"/>
                                                 </button>
                                             </td>
                                         </tr>
@@ -314,21 +316,21 @@ const EmployeeList = () => {
                                         onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                                         disabled={currentPage === 1}
                                     >
-                                        <ChevronLeft className="w-4 h-4" />
+                                        <ChevronLeft className="w-4 h-4"/>
                                     </button>
                                     <button
                                         className="border rounded px-3 py-1 hover:bg-gray-100"
                                         onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                                         disabled={currentPage === totalPages}
                                     >
-                                        <ChevronRight className="w-4 h-4" />
+                                        <ChevronRight className="w-4 h-4"/>
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {isModalOpen && <AddEmployeeModal onClose={handleCloseModal} />}
+                    {isModalOpen && <AddEmployeeModal onClose={handleCloseModal}/>}
 
                 </main>
             </div>

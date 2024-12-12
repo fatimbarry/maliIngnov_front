@@ -127,6 +127,13 @@ const ProjectDetails = () => {
                                     <div className="text-orange-500 font-bold">6.00 FCFA</div>
                                 </div>
                             </div>
+                            <div className="bg-white rounded-lg shadow-md p-4">
+                                <h4 className="text-lg font-medium mb-2">faire un test</h4>
+                                <div className="flex justify-between items-center">
+                                    <p className="text-gray-600">À livrer avant le : Non défini</p>
+                                    <div className="text-orange-500 font-bold">6.00 FCFA</div>
+                                </div>
+                            </div>
                             {/* Ajouter d'autres tâches ici */}
                         </div>
                     </div>
