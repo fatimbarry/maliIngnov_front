@@ -3,14 +3,14 @@ import axios from 'axios';
 import { Clock, Plus, X } from 'lucide-react';
 import Swal from "sweetalert2";
 
-const AddTaskModal = ({ projets, onTaskAdded }) => {
+const AddTaskModal = ({ projetId, onTaskAdded }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [task, setTask] = useState({
         titre: '',
         description: '',
         temps_previs: '',
         status: 'A faire',
-        projet_id: ''
+        due_date: ''
     });
 
     const handleInputChange = (e) => {
@@ -40,18 +40,27 @@ const AddTaskModal = ({ projets, onTaskAdded }) => {
             timer: 4000,
             timerProgressBar: true,
         });
-    };
+    }
+    console.log({
+        task,
+        projet_id: projetId,
+    });
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8000/api/taches-store', task, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            const response = await axios.post('http://localhost:8000/api/taches-store',
+                {
+                    ...task, // Déstructure l'objet `task` pour inclure ses propriétés directement
+                    projet_id: projetId, // Ajoute `projet_id` au même niveau
                 },
-                withCredentials: true,
-            });
+                {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    },
+                    withCredentials: true,
+                });
 
             if (response.data) {
                 showToast('La tâche a été ajoutée avec succès!', 'success');
@@ -62,7 +71,7 @@ const AddTaskModal = ({ projets, onTaskAdded }) => {
                     description: '',
                     temps_previs: '',
                     status: 'A faire',
-                    projet_id: ''
+                    due_date: ''
                 });
 
                 if (onTaskAdded) {
@@ -82,9 +91,9 @@ const AddTaskModal = ({ projets, onTaskAdded }) => {
         <>
             <button
                 onClick={() => setIsOpen(true)}
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg mb-4 hover:bg-blue-600 float-end flex items-center"
+                className="text-green-500 hover:text-green-700 ml-2"
             >
-                <Plus className="mr-2 h-5 w-5" /> Ajouter une tâche
+                <Plus className="mr-2 h-5 w-5" />
             </button>
 
             {isOpen && (
@@ -156,23 +165,19 @@ const AddTaskModal = ({ projets, onTaskAdded }) => {
                                     </div>
 
                                     <div>
-                                        <label htmlFor="projet_id" className="block text-sm font-medium text-gray-700 mb-2">
-                                            Projet
+                                        <label htmlFor="projet_id"
+                                               className="block text-sm font-medium text-gray-700 mb-2">
+                                            Date D'échéance
                                         </label>
-                                        <select
-                                            name="projet_id"
-                                            id="projet_id"
-                                            value={task.projet_id}
+                                        <input
+                                            type="date"
+                                            id="due_date"
+                                            name="due_date"
+                                            value={task.due_date}
                                             onChange={handleInputChange}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        >
-                                            <option value="">Sélectionnez un projet</option>
-                                            {projets.map(projet => (
-                                                <option key={projet.id} value={projet.id}>
-                                                    {projet.libelle}
-                                                </option>
-                                            ))}
-                                        </select>
+                                            required
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                                        />
                                     </div>
                                 </div>
 

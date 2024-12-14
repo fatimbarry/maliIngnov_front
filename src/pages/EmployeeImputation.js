@@ -8,6 +8,30 @@ import Footer from "../components/Footer";
 const EmployeeImputation = () => {
   const [duration, setDuration] = useState('03:00');
   const [showDurationPicker, setShowDurationPicker] = useState(false);
+  const [hour, setHour] = useState(3);  // état pour l'heure (0-23)
+  const [minute, setMinute] = useState(0);  // état pour les minutes (0-59)
+
+  // Fonction pour gérer le changement de l'heure
+  const handleHourChange = (e) => {
+    const newHour = e.target.value;
+    setHour(newHour);
+    setDuration(formatDuration(newHour, minute));
+  };
+
+  // Fonction pour gérer le changement des minutes
+  const handleMinuteChange = (e) => {
+    const newMinute = e.target.value;
+    setMinute(newMinute);
+    setDuration(formatDuration(hour, newMinute));
+  };
+
+  // Formatage de la durée au format "HH:MM"
+  const formatDuration = (hours, minutes) => {
+    const formattedHour = hours.toString().padStart(2, '0');
+    const formattedMinute = minutes.toString().padStart(2, '0');
+    return `${formattedHour}:${formattedMinute}`;
+  };
+
 
   const handleDurationChange = (e) => {
     setDuration(e.target.value);
@@ -53,16 +77,16 @@ const EmployeeImputation = () => {
               </div>
             </header>
 
-            <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6" role="alert">
-              <p className="font-bold">Imputation a été avec succès.</p>
-            </div>
+            {/*<div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6" role="alert">*/}
+            {/*  <p className="font-bold">Imputation a été avec succès.</p>*/}
+            {/*</div>*/}
 
             <div className="bg-white shadow rounded-lg p-6 mb-6">
               <form className="space-y-4">
                 <div className="flex items-center space-x-4">
                   <label className="w-1/4">Tâche à imputer:</label>
                   <select className="form-select w-3/4 border rounded px-3 py-2">
-                    <option>Tache4</option>
+                    <option>Aucune Tache Disponible</option>
                   </select>
                 </div>
                 <div className="flex items-center space-x-4">
@@ -81,24 +105,50 @@ const EmployeeImputation = () => {
                           <div className="space-y-2">
                             <label className="block">
                               Temps
-                              <input type="text" value={duration} onChange={handleDurationChange}
-                                     className="form-input mt-1 w-full"/>
+                              <input
+                                  type="text"
+                                  value={duration}
+                                  readOnly
+                                  className="form-input mt-1 w-full"
+                              />
                             </label>
+
                             <label className="block">
                               Heure
-                              <input type="range" min="0" max="23" className="form-range w-full"/>
+                              <input
+                                  type="range"
+                                  min="0"
+                                  max="23"
+                                  value={hour}
+                                  onChange={handleHourChange}
+                                  className="form-range w-full"
+                              />
                             </label>
+
                             <label className="block">
                               Minute
-                              <input type="range" min="0" max="59" className="form-range w-full"/>
+                              <input
+                                  type="range"
+                                  min="0"
+                                  max="59"
+                                  value={minute}
+                                  onChange={handleMinuteChange}
+                                  className="form-range w-full"
+                              />
                             </label>
                           </div>
                           <div className="flex justify-end mt-4 space-x-2">
-                            <button className="px-3 py-1 bg-green-500 text-white rounded"
-                                    onClick={() => setShowDurationPicker(false)}>Valider
+                            <button
+                                className="px-3 py-1 bg-green-500 text-white rounded"
+                                onClick={() => setShowDurationPicker(false)}
+                            >
+                              Valider
                             </button>
-                            <button className="px-3 py-1 bg-gray-300 rounded"
-                                    onClick={() => setShowDurationPicker(false)}>Annuler
+                            <button
+                                className="px-3 py-1 bg-gray-300 rounded"
+                                onClick={() => setShowDurationPicker(false)}
+                            >
+                              Annuler
                             </button>
                           </div>
                         </div>

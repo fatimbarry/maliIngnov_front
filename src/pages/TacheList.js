@@ -129,15 +129,15 @@ const Dashboard = () => {
                 {/* Main Content */}
                 <main className="flex-1 ml-64 p-8">
                     {/* Button to Add Task */}
-                    <div>
-                        {/* Remplacez l'ancien bouton par le composant AddTaskModal */}
-                        <AddTaskModal
-                            projets={projets}
-                            onTaskAdded={handleTaskAdded}
-                        />
+                    {/*<div>*/}
+                    {/*    /!* Remplacez l'ancien bouton par le composant AddTaskModal *!/*/}
+                    {/*    <AddTaskModal*/}
+                    {/*        projets={projets}*/}
+                    {/*        onTaskAdded={handleTaskAdded}*/}
+                    {/*    />*/}
 
-                        {/* Reste de votre liste de tâches */}
-                    </div>
+                    {/*    /!* Reste de votre liste de tâches *!/*/}
+                    {/*</div>*/}
 
                     {/* Task List */}
                     <div className="bg-white rounded-lg shadow-md p-4">

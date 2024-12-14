@@ -113,7 +113,7 @@ const ProjectDetails = () => {
                             <img src="/Coach Barry.png" alt="Client" className="w-8 h-8 rounded-full mr-2"/>
                             <div>
                                 <p className="text-gray-600">À propos du client</p>
-                                <p className="font-medium">Menardou Barry</p>
+                                <p className="font-medium">Mamadou Barry</p>
                             </div>
                         </div>
                         <p className="text-gray-600 mb-2">Mode de paiement vérifié</p>

@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import {User} from "lucide-react";
+import {Hand, User, UserCircle} from "lucide-react";
 import Footer from "../components/Footer";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const ChefInterface = () => {
     const [email, setEmail] = useState('');
+    const [status, setStatus] = useState(''); // "present" ou "absent"
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
     useEffect(() => {
         const fetchUserData = async () => {
             const token = localStorage.getItem('token');
@@ -30,7 +35,104 @@ const ChefInterface = () => {
         };
 
         fetchUserData();
+    }, [])
+
+    const tiles = [
+        {
+            id: 3,
+            title: 'Pointage',
+            icon: Hand,
+            color: status === 'present' ? 'bg-green-500' : 'bg-red-500'
+        }
+        ];
+
+    const showToast = (message, type = "success") => {
+        Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: type,
+            title: message,
+            showConfirmButton: false,
+            timer: 4000,
+            timerProgressBar: true,
+        });
+    };
+
+
+    // Fonction pour récupérer l'ID utilisateur depuis le token
+    const getUserIdFromToken = () => {
+        const userId = localStorage.getItem('user_id');
+        if (!userId) {
+            setError("Utilisateur non authentifié");
+            return null;
+        }
+        return userId;
+    };
+
+    // Charger le statut actuel de l'utilisateur
+    useEffect(() => {
+        const fetchStatus = async () => {
+            const userId = getUserIdFromToken();
+            if (!userId) return;
+
+            try {
+                setLoading(true);
+                const token = localStorage.getItem('token');
+                const response = await axios.get(`http://127.0.0.1:8000/api/pointages/${userId}/status`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    withCredentials: true,
+                });
+                setStatus(response.data.status);
+            } catch {
+                setError('Erreur lors de la récupération du statut.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchStatus();
     }, []);
+
+    // Basculer le statut
+    const toggleStatus = async () => {
+        const userId = getUserIdFromToken();
+        if (!userId) return;
+
+        try {
+            setLoading(true);
+
+            const token = localStorage.getItem('token');
+            console.log('Token:', token); // Vérifiez si le token est correct
+
+            const response = await axios.put(
+                `http://127.0.0.1:8000/api/pointages/${userId}/toggle-status`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    withCredentials: true,
+                }
+            );
+
+            console.log('Response:', response.data); // Affiche la réponse pour débogage
+            setStatus(response.data.status);
+            showToast(`Statut mis à jour : ${status === 'present' ? 'Absent' : 'Présent'}`);
+
+        } catch (error) {
+            console.error('Error:', error.response?.data || error.message);
+            setError('Erreur lors de la mise à jour du statut.');
+            showToast('Erreur lors de la mise à jour du statut');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -67,28 +169,43 @@ const ChefInterface = () => {
                             </div>
                         </Link>
                         <Link to="/ProjectsList"
-                            className="bg-green-500 p-8 rounded-lg flex items-center justify-between hover:bg-green-600 transition-colors duration-300">
+                            className="bg-gray-500 p-8 rounded-lg flex items-center justify-between hover:bg-gray-600 transition-colors duration-300">
                             <div className="text-white font-medium text-lg">Contrôle du temps</div>
                             <div className="bg-white p-6 rounded-full">
-                                <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor"
+                                <svg className="w-6 h-6 text-gray-500" fill="none" stroke="currentColor"
                                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                                           d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
                             </div>
                         </Link>
-                        <Link to="/TacheList"
-                            className="bg-gray-500 p-8 rounded-lg flex items-center justify-between hover:bg-gray-600 transition-colors duration-300">
-                            <div className="text-white font-medium text-lg">Gestion Taches</div>
-                            <div className="bg-white p-6 rounded-full">
-                                <svg className="w-6 h-6 text-gray-500" fill="none" stroke="currentColor"
-                                     viewBox="0 0 24 24"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
+                        {tiles.map((tile) => (
+                            <div
+                                key={tile.id}
+                                className={`${tile.color} ${tile.size} rounded-lg shadow-lg hover:shadow-xl transition-shadow`}
+                            >
+                                {tile.id === 3 ? (
+                                    <>
+                                        <button
+                                            className="w-full h-full flex flex-col items-center justify-center text-white p-6"
+                                            onClick={toggleStatus}
+                                            disabled={loading}
+                                        >
+                                            <tile.icon className="w-16 h-16 mb-4" />
+                                            <span className="text-xl font-semibold">
+                                                {loading ? 'Chargement...' : `Pointage (${status})`}
+                                            </span>
+                                        </button>
+
+                                    </>
+                                ) : (
+                                    <div>
+                                        {/* Contenu pour les autres `tile.id` */}
+                                    </div>
+                                )}
                             </div>
-                        </Link>
+                        ))}
+
                         <Link to="/MaliIngenovWorkInterface"
                             className="bg-gray-800 p-8 rounded-lg flex items-center justify-between hover:bg-gray-700 transition-colors duration-300">
                             <div className="text-white font-medium text-lg">Profil</div>

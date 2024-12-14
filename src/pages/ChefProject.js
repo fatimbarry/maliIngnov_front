@@ -1,56 +1,63 @@
-import React from 'react';
 import Navbar from "../components/Navbar";
 import {Link} from "react-router-dom";
-import {Edit, Eye, Home, Star} from "lucide-react";
+import {Edit, Eye, Home, Plus, Star} from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import AddTaskModal from "./AddTaskModal ";
+import ProjectDetailsModal from "./ProjectDetailsModal";
 
 const ChefProject = () => {
-    const data = [
-        {
-            numero: 12,
-            libelle: 'Site e-commerce',
-            'date_service': '9 sept. 2023',
-            client: 'Assou Barry',
-            etat: 'En Cours',
-            'date_achevement': '16 sept. 2024',
+    // États pour gérer les données et la pagination
+    const [projets, setProjets] = useState([]);
+    const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [selectedProjetForTask, setSelectedProjetForTask] = useState(null);
+    const [selectedProjetForDetails, setSelectedProjetForDetails] = useState(null);
+    // Fonctions pour gérer les modals
+    const handleOpenTaskModal = (projetId) => {
+        setSelectedProjetForTask(projetId);
+    };
 
-        },
-        {
-            numero: 34,
-            libelle: 'APPLICATION DE5G6',
-            'date_service': '11 août 2014',
-            client: 'Massamba Barry',
-            etat: 'En Cours',
-            'date_achevement': '20 août 2014',
+    const handleCloseTaskModal = () => {
+        setSelectedProjetForTask(null);
+    };
 
-        },
-        {
-            numero: 42,
-            libelle: 'DDDDDD',
-            'date_service': '12 août 2014',
-            client: 'Ibou',
-            etat: 'En Cours',
-            'date_achevement': '14 août 2014',
+    const handleOpenDetailsModal = (projetId) => {
+        setSelectedProjetForDetails(projetId);
+    };
 
-        },
-        {
-            numero: 54,
-            libelle: 'APPLICATION de DOFF',
-            'date_service': '1 août 2014',
-            client: 'Ibou Kah',
-            etat: 'En Attente',
-            'date_achevement': '15 août 2014',
+    const handleCloseDetailsModal = () => {
+        setSelectedProjetForDetails(null);
+    };
+    // Récupération des données depuis l'API
+    useEffect(() => {
+        const fetchProjets = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/api/projets',{
+                    headers: {
+                    'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` // Si nécessaire
+                },
+            });
+                setProjets(response.data);
+            } catch (error) {
+                console.error('Erreur lors de la récupération des projets:', error);
+            }
+        };
 
-        },
-        {
-            numero: 143,
-            libelle: 'AUTOROUTE dakar-casa',
-            'date_service': '13 août 2014',
-            client: 'Assou Barry',
-            etat: 'En Cours',
-            'date_achevement': '13 nov. 2014',
+        fetchProjets();
+    }, []);
 
-        }
-    ];
+    // Pagination des projets
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentProjets = projets.slice(indexOfFirstItem, indexOfLastItem);
+
+    // Changement du nombre d'éléments par page
+    const handleItemsPerPageChange = (number) => {
+        setItemsPerPage(number);
+        setCurrentPage(1);
+    };
+
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -76,62 +83,120 @@ const ChefProject = () => {
                 {/* Main content */}
                 <main className="flex-1 ml-64 p-8">
 
-                    <div className="flex-1 bg-gray-900 text-white p-6">
-                        <h2 className="text-2xl font-bold mb-4">Liste des projets</h2>
-                        <div className="flex justify-between items-center mb-4">
-                            <div>
-                                <span className="mr-2">Afficher</span>
-                                <select className="bg-gray-800 text-white px-2 py-1 rounded">
-                                    <option>10</option>
-                                    <option>20</option>
-                                    <option>50</option>
-                                </select>
-                            </div>
-                            <input
-                                type="text"
-                                className="bg-gray-800 text-white px-2 py-1 rounded w-64"
-                                placeholder="Chercher par..."
-                            />
+                    <div className="w-full bg-white shadow-md rounded-lg overflow-hidden">
+                        <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
+                            <h2 className="text-xl font-semibold text-gray-800">Liste des Projets</h2>
                         </div>
-                        <table className="w-full border-collapse">
-                            <thead>
-                            <tr className="bg-gray-800 text-gray-400">
-                                <th className="px-4 py-2 text-left">Numéro</th>
-                                <th className="px-4 py-2 text-left">Libellé</th>
-                                <th className="px-4 py-2 text-left">Date service</th>
-                                <th className="px-4 py-2 text-left">Client</th>
-                                <th className="px-4 py-2 text-left">Etat</th>
-                                <th className="px-4 py-2 text-left">Date achèvement</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {data.map((affaire, index) => (
-                                <tr
-                                    key={index}
-                                    className={`border-b border-gray-800 ${
-                                        index % 2 === 0 ? 'bg-gray-800' : 'bg-gray-700'
+
+                        {/* Options de pagination */}
+                        <div className="px-6 py-4 flex items-center space-x-3">
+                            <span className="text-gray-600">Afficher</span>
+                            {[10, 20, 50].map((number) => (
+                                <button
+                                    key={number}
+                                    onClick={() => handleItemsPerPageChange(number)}
+                                    className={`px-3 py-1 rounded text-sm transition-colors duration-200 ${
+                                        itemsPerPage === number
+                                            ? 'bg-blue-500 text-white'
+                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                     }`}
                                 >
-                                    <td className="px-4 py-2 text-left">{affaire.numero}</td>
-                                    <td className="px-4 py-2 text-left">{affaire.libelle}</td>
-                                    <td className="px-4 py-2 text-left">{affaire['date_service']}</td>
-                                    <td className="px-4 py-2 text-left">{affaire.client}</td>
-                                    <td
-                                        className={`px-4 py-2 text-left ${
-                                            affaire.etat === 'En Cours'
-                                                ? 'text-green-500'
-                                                : affaire.etat === 'En Attente'
-                                                    ? 'text-orange-500'
-                                                    : 'text-red-500'
-                                        }`}
-                                    >
-                                        {affaire.etat}
-                                    </td>
-                                    <td className="px-4 py-2 text-left">{affaire['date_achevement']}</td>
-                                </tr>
+                                    {number}
+                                </button>
                             ))}
-                            </tbody>
-                        </table>
+                        </div>
+
+                        {/* Tableau des projets */}
+                        <div className="overflow-x-auto">
+                            <table className="w-full">
+                                <thead className="bg-gray-100 border-b">
+                                <tr>
+                                    {['Libellé', 'Date Service', 'Client', 'État', 'Date Achèvement','Action'].map((header) => (
+                                        <th
+                                            key={header}
+                                            className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        >
+                                            {header}
+                                        </th>
+                                    ))}
+                                </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-gray-200">
+                                {currentProjets.map((projet, index) => (
+                                    <tr key={projet.id || index} className="hover:bg-gray-50">
+                                        <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{projet.libelle || 'Non défini'}</td>
+                                        <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{projet.date_service || 'Non spécifiée'}</td>
+                                        <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                                            {projet.client ? `${projet.client.prenom || ''} ${projet.client.nom || ''}`.trim() || 'Non renseigné' : 'Non renseigné'}
+                                        </td>
+                                        <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{projet.statut || 'Inconnu'}</td>
+                                        <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{projet.date_fin || 'Non terminé'}</td>
+                                        <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                                            {/* Bouton pour ajouter une tâche */}
+                                            <button
+                                                className="text-green-500 hover:text-green-700 ml-2"
+                                                onClick={() => handleOpenTaskModal(projet.id)}
+                                            >
+                                                <Plus className="h-5 w-5"/>
+                                            </button>
+
+                                            {/* Modal pour ajouter une tâche */}
+                                            {selectedProjetForTask === projet.id && (
+                                                <AddTaskModal
+                                                    projetId={selectedProjetForTask}
+                                                    onTaskAdded={handleCloseTaskModal}
+                                                />
+                                            )}
+
+                                            {/* Bouton pour voir les détails du projet */}
+                                            <button
+                                                className="text-gray-500 hover:text-gray-700"
+                                                onClick={() => handleOpenDetailsModal(projet.id)}
+                                            >
+                                                <Eye className="h-4 w-4"/>
+                                            </button>
+
+                                            {/* Modal pour voir les détails du projet */}
+                                            {selectedProjetForDetails === projet.id && (
+                                                <ProjectDetailsModal
+                                                    projectId={selectedProjetForDetails}
+                                                    isOpen={true}
+                                                    onClose={handleCloseDetailsModal}
+                                                />
+                                            )}
+                                        </td>
+
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        {/* Pagination */}
+                        <div className="px-6 py-4 flex justify-between items-center border-t">
+                            <span className="text-sm text-gray-700">
+                              Page {currentPage} sur {Math.ceil(projets.length / itemsPerPage)}
+                            </span>
+                            <div className="space-x-2">
+                                <button
+                                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                    disabled={currentPage === 1}
+                                    className="px-4 py-2 text-sm bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    Précédent
+                                </button>
+                                <button
+                                    onClick={() => setCurrentPage(prev =>
+                                        prev < Math.ceil(projets.length / itemsPerPage) ? prev + 1 : prev
+                                    )}
+                                    disabled={currentPage >= Math.ceil(projets.length / itemsPerPage)}
+                                    className="px-4 py-2 text-sm bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    Suivant
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </main>
             </div>

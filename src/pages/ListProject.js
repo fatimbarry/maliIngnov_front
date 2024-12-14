@@ -10,8 +10,7 @@ import {
   UserCheck,
   Truck,
   Calendar as CalendarIcon,
-  Plus,
-  Edit,
+  Edit, Plus,
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -215,7 +214,7 @@ const ListProject = () => {
                       <td className="px-4 py-2">{project.date_debut}</td>
                       <td className="px-4 py-2">{project.delai}</td>
                       <td className="px-4 py-2">
-                        {project.client ? `${project.client.nom} ${project.client.prenom}` : 'Aucun client'}
+                        {project.client ? `${project.client.prenom} ${project.client.nom}` : 'Aucun client'}
                       </td>
 
                       <td className="px-4 py-2">
@@ -231,9 +230,12 @@ const ListProject = () => {
                       </td>
                       <td className="px-4 py-2">
 
-                        <button className="text-green-500 hover:text-green-700 mr-2"
-                                onClick={() => handleOpenModal2(project.id)}>
-                          <Plus className="h-4 w-4"/>
+                        <button
+                            onClick={() => handleOpenModal2(project.id)}
+                            className="text-green-500 hover:text-green-700 mr-2"
+                            >
+                          <Plus className="h-5 w-5"/>
+
                         </button>
 
 

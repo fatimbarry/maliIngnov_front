@@ -5,13 +5,7 @@ import Navbar from "../components/Navbar";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function formatDay(dateString) {
-  const options = { weekday: 'long' }; // Configure pour afficher le jour de la semaine
-  const date = new Date(dateString);
-  return date.toLocaleDateString('fr-FR', options); // 'fr-FR' pour le français
-}
-
-const PointageList = () => {
+  const PointageList = () => {
   // State for managing pointage data and pagination
   const [pointages, setPointages] = useState([]);
   const [pagination, setPagination] = useState({
@@ -152,7 +146,6 @@ const PointageList = () => {
               <table className="w-full">
                 <thead className="bg-gray-100">
                 <tr>
-                  <th className="p-2 text-left">Jour <ChevronDown size={14} className="inline" /></th>
                   <th className="p-2 text-left">Date <ChevronDown size={14} className="inline" /></th>
                   <th className="p-2 text-left">Pointage <ChevronDown size={14} className="inline" /></th>
                   <th className="p-2 text-left">Durée <ChevronDown size={14} className="inline" /></th>
@@ -162,7 +155,6 @@ const PointageList = () => {
                 <tbody>
                 {pointages.map((pointage, index) => (
                     <tr key={pointage.id} className={index % 2 === 0 ? 'bg-gray-50' : ''}>
-                      <td className="p-2">{formatDay(pointage.punch_in.datetime)}</td>
                       <td className="p-2">{pointage.punch_in.formatted.split(' ')[0]}</td>
                       <td className="p-2">
                         {pointage.punch_in.formatted.split(' ')[1]} →

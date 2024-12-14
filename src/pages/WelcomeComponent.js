@@ -59,7 +59,7 @@ const WelcomeComponent = () => {
 
         {
             icon: Compass,
-            label: "Direction",
+            label: "Administration",
             gradient: "bg-gradient-to-br from-cyan-500 to-blue-400",
             delay: 0.4
         },
